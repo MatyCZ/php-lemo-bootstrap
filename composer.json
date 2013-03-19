@@ -1,0 +1,30 @@
+{
+    "name": "matycz/lemo-bootstrap",
+    "description": "",
+    "type": "library",
+    "keywords": [
+        "zf2",
+        "twitter bootstrap"
+    ],
+    "homepage": "https://github.com/MatyCZ/LemoBootstrap",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Matej Szendi",
+            "email": "matej.szendi@gmail.com",
+            "homepage": "http://lemo.cz/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "LemoBootstrap": "src/"
+        },
+        "classmap": [
+            "./Module.php"
+        ]
+    }
+}
