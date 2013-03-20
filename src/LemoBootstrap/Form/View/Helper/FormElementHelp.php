@@ -1,6 +1,6 @@
 <?php
 
-namespace LemoBootstrap\View\Helper;
+namespace LemoBootstrap\Form\View\Helper;
 
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\AbstractHelper;
@@ -44,16 +44,35 @@ class FormElementHelp extends AbstractHelper
      */
     public function render(ElementInterface $element)
     {
-        $content = '';
+        $helpString = '';
 
+        // Block
         if (null !== $element->getOption('help-block')) {
-            $content .= sprintf($this->getTemplateBlock(), $element->getOption('help-block'));
-        }
-        if (null !== $element->getOption('help-inline')) {
-            $content .= sprintf($this->getTemplateInline(), $element->getOption('help-inline'));
+            $help = $element->getOption('help-block');
+
+            if (null !== ($translator = $this->getTranslator())) {
+                $help = $translator->translate(
+                    $help, $this->getTranslatorTextDomain()
+                );
+            }
+
+            $helpString .= sprintf($this->getTemplateBlock(), $help);
         }
 
-        return $content;
+        // Inline
+        if (null !== $element->getOption('help-inline')) {
+            $help = $element->getOption('help-inline');
+
+            if (null !== ($translator = $this->getTranslator())) {
+                $help = $translator->translate(
+                    $help, $this->getTranslatorTextDomain()
+                );
+            }
+
+            $helpString .= sprintf($this->getTemplateInline(), $help);
+        }
+
+        return $helpString;
     }
 
     /**

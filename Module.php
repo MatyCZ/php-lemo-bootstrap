@@ -19,7 +19,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, Co
         return array(
             AutoloaderFactory::STANDARD_AUTOLOADER => array(
                 StandardAutoloader::LOAD_NS => array(
-                    __NAMESPACE__ => __DIR__,
+                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
             ),
         );
@@ -52,10 +52,15 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, Co
     {
         return array(
             'invokables' => array(
-                'lemoFlashMessanger' => 'BcomCrm\View\Helper\FlashMessanger',
-                'form'               => 'LemoBootstrap\Form\View\Helper\Form',
-                'formElementHelp'    => 'LemoBootstrap\Form\View\Helper\FormElementHelp',
-                'formRow'            => 'LemoBootstrap\Form\View\Helper\FormRow',
+//                'flashMessanger'     => 'LemoBootstrap\View\Helper\FlashMessanger',
+                'form'              => 'LemoBootstrap\Form\View\Helper\Form',
+                'formCollection'    => 'LemoBootstrap\Form\View\Helper\FormCollection',
+                'formElement'       => 'LemoBootstrap\Form\View\Helper\FormElement',
+                'formElementErrors' => 'LemoBootstrap\Form\View\Helper\FormElementErrors',
+                'formElementHelp'   => 'LemoBootstrap\Form\View\Helper\FormElementHelp',
+                'formLabel'         => 'LemoBootstrap\Form\View\Helper\FormLabel',
+                'formRow'           => 'LemoBootstrap\Form\View\Helper\FormRow',
+                'formRowElements'           => 'LemoBootstrap\Form\View\Helper\FormRowElements',
             )
         );
     }

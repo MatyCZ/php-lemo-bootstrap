@@ -13,7 +13,9 @@ class HelperConfig implements ConfigInterface
      * @var array
      */
     protected $invokables = array(
-        'form'                    => 'LemoBootstrap\Form\View\Helper\Form',
+        'form' => 'LemoBootstrap\Form\View\Helper\Form',
+        'formElementHelp' => 'LemoBootstrap\Form\View\Helper\FormElementHelp',
+        'formRow' => 'LemoBootstrap\Form\View\Helper\FormRow',
     );
 
     /**
