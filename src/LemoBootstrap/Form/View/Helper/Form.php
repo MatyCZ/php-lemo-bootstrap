@@ -37,6 +37,8 @@ class Form extends FormHelper
             return $this;
         }
 
+        $form->prepare();
+
         return parent::render($form);
     }
 

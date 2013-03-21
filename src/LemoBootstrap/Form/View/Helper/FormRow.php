@@ -10,10 +10,6 @@ use Zend\Form\View\Helper\FormRow as FormRowHelper;
 
 class FormRow extends FormRowHelper
 {
-    const LABEL_APPEND = 'append';
-    const LABEL_DEFAULT = null;
-    const LABEL_PREPEND = 'prepend';
-
     /**
      * @var FormElementHelpBlock
      */
@@ -27,7 +23,7 @@ class FormRow extends FormRowHelper
     /**
      * @var string
      */
-    protected $labelPosition = self::LABEL_DEFAULT;
+    protected $labelPosition = null;
 
     /**
      * @var string
@@ -42,14 +38,15 @@ class FormRow extends FormRowHelper
      */
     public function render(ElementInterface $element)
     {
-        $helperEscapeHtml    = $this->getEscapeHtmlHelper();
-        $helperLabel         = $this->getLabelHelper();
-        $helperElement       = $this->getElementHelper();
-        $helperElementErrors = $this->getElementErrorsHelper();
-        $helperElementHelpBlock   = $this->getElementHelpBlockHelper();
-        $helperElementHelpInline   = $this->getElementHelpInlineHelper();
+        $helperEscapeHtml        = $this->getEscapeHtmlHelper();
+        $helperLabel             = $this->getLabelHelper();
+        $helperElement           = $this->getElementHelper();
+        $helperElementErrors     = $this->getElementErrorsHelper();
+        $helperElementHelpBlock  = $this->getElementHelpBlockHelper();
+        $helperElementHelpInline = $this->getElementHelpInlineHelper();
 
         $label           = $element->getLabel();
+        $options         = $element->getOptions();
         $inputErrorClass = $this->getInputErrorClass();
         $elementErrors   = $helperElementErrors->setAttributes(array('class' => 'errors'))->render($element);
 
@@ -63,7 +60,6 @@ class FormRow extends FormRowHelper
         }
 
         if ($this->renderErrors && !empty($elementErrors)) {
-            $options = $element->getOptions();
             $options['help-block'] = $elementErrors;
 
             $element->setOptions($options);
@@ -73,9 +69,10 @@ class FormRow extends FormRowHelper
         $elementHelpInline = $helperElementHelpInline->render($element);
         $elementHelpBlock  = $helperElementHelpBlock->render($element);
 
-        // Add element helps
+        // Add helps to element string
         $elementString .= $elementHelpInline . $elementHelpBlock;
 
+        // Wrap html to element string
         $elementString = '<div class="controls">' . $elementString . '</div>';
 
         if (isset($label) && '' !== $label) {
@@ -118,9 +115,15 @@ class FormRow extends FormRowHelper
             }
         }
 
+        $hideCondition = '';
+        if(true === $element->getOption('hide')) {
+            $hideCondition = ' hide';
+        }
+
         return sprintf(
-            '<div class="control-group %s" id="control-group-%s">%s</div>',
+            '<div class="control-group %s %s" id="control-group-%s">%s</div>',
             $this->getStatus(),
+            $hideCondition,
             $this->getId($element),
             $elementString
         );
