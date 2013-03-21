@@ -3,7 +3,8 @@
 namespace LemoBootstrap\Form\View\Helper;
 
 use LemoBootstrap\Exception;
-use LemoBootstrap\Form\View\Helper\FormElementHelp;
+use LemoBootstrap\Form\View\Helper\FormElementHelpBlock;
+use LemoBootstrap\Form\View\Helper\FormElementHelpInline;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\FormRow as FormRowHelper;
 
@@ -14,9 +15,14 @@ class FormRow extends FormRowHelper
     const LABEL_PREPEND = 'prepend';
 
     /**
-     * @var FormElementHelp
+     * @var FormElementHelpBlock
      */
-    protected $elementHelpHelper;
+    protected $elementHelpBlock;
+
+    /**
+     * @var FormElementHelpInline
+     */
+    protected $elementHelpInline;
 
     /**
      * @var string
@@ -40,12 +46,12 @@ class FormRow extends FormRowHelper
         $helperLabel         = $this->getLabelHelper();
         $helperElement       = $this->getElementHelper();
         $helperElementErrors = $this->getElementErrorsHelper();
-        $helperElementHelp   = $this->getElementHelpHelper();
+        $helperElementHelpBlock   = $this->getElementHelpBlockHelper();
+        $helperElementHelpInline   = $this->getElementHelpInlineHelper();
 
         $label           = $element->getLabel();
         $inputErrorClass = $this->getInputErrorClass();
-        $elementErrors   = $helperElementErrors->setAttributes(array('class' => 'help-inline'))->render($element);
-        $elementHelp   = $helperElementHelp->render($element);
+        $elementErrors   = $helperElementErrors->setAttributes(array('class' => 'errors'))->render($element);
 
         // Does this element have errors ?
         if (!empty($elementErrors) && !empty($inputErrorClass)) {
@@ -56,11 +62,19 @@ class FormRow extends FormRowHelper
             $this->setStatus('error');
         }
 
-        $elementString = $helperElement->render($element) . $elementErrors;
+        if ($this->renderErrors && !empty($elementErrors)) {
+            $options = $element->getOptions();
+            $options['help-block'] = $elementErrors;
 
-        if (!$this->renderErrors || empty($elementErrors)) {
-            $elementString .= $elementHelp;
+            $element->setOptions($options);
         }
+
+        $elementString     = $helperElement->render($element);
+        $elementHelpInline = $helperElementHelpInline->render($element);
+        $elementHelpBlock  = $helperElementHelpBlock->render($element);
+
+        // Add element helps
+        $elementString .= $elementHelpInline . $elementHelpBlock;
 
         $elementString = '<div class="controls">' . $elementString . '</div>';
 
@@ -167,47 +181,47 @@ class FormRow extends FormRowHelper
     }
 
     /**
-     * Retrieve the FormElementErrors helper
+     * Retrieve the FormElementHelpBlock helper
      *
-     * @return FormElementErrors
+     * @return FormElementHelpBlock
      */
-    protected function getElementErrorsHelper()
+    protected function getElementHelpBlockHelper()
     {
-        if ($this->elementErrorsHelper) {
-            return $this->elementErrorsHelper;
+        if ($this->elementHelpBlock) {
+            return $this->elementHelpBlock;
         }
 
         if (method_exists($this->view, 'plugin')) {
-            $this->elementErrorsHelper = $this->view->plugin('form_element_errors');
+            $this->elementHelpBlock = $this->view->plugin('form_element_help_block');
         }
 
-        if (!$this->elementErrorsHelper instanceof FormElementErrors) {
-            $this->elementErrorsHelper = new FormElementErrors();
+        if (!$this->elementHelpBlock instanceof FormElementHelpBlock) {
+            $this->elementHelpBlock = new FormElementHelpBlock();
         }
 
-        return $this->elementErrorsHelper;
+        return $this->elementHelpBlock;
     }
 
     /**
-     * Retrieve the FormElementHelp helper
+     * Retrieve the FormElementHelpInline helper
      *
-     * @return FormElementHelp
+     * @return FormElementHelpInline
      */
-    protected function getElementHelpHelper()
+    protected function getElementHelpInlineHelper()
     {
-        if ($this->elementHelpHelper) {
-            return $this->elementHelpHelper;
+        if ($this->elementHelpInline) {
+            return $this->elementHelpInline;
         }
 
         if (method_exists($this->view, 'plugin')) {
-            $this->elementHelpHelper = $this->view->plugin('form_element_help');
+            $this->elementHelpInline = $this->view->plugin('form_element_help_inline');
         }
 
-        if (!$this->elementHelpHelper instanceof FormElementHelp) {
-            $this->elementHelpHelper = new FormElementHelp();
+        if (!$this->elementHelpInline instanceof FormElementHelpInline) {
+            $this->elementHelpInline = new FormElementHelpInline();
         }
 
-        return $this->elementHelpHelper;
+        return $this->elementHelpInline;
     }
 
     /**

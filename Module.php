@@ -53,14 +53,14 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, Co
         return array(
             'invokables' => array(
 //                'flashMessanger'     => 'LemoBootstrap\View\Helper\FlashMessanger',
-                'form'              => 'LemoBootstrap\Form\View\Helper\Form',
-                'formCollection'    => 'LemoBootstrap\Form\View\Helper\FormCollection',
-                'formElement'       => 'LemoBootstrap\Form\View\Helper\FormElement',
-                'formElementErrors' => 'LemoBootstrap\Form\View\Helper\FormElementErrors',
-                'formElementHelp'   => 'LemoBootstrap\Form\View\Helper\FormElementHelp',
-                'formLabel'         => 'LemoBootstrap\Form\View\Helper\FormLabel',
-                'formRow'           => 'LemoBootstrap\Form\View\Helper\FormRow',
-                'formRowElements'           => 'LemoBootstrap\Form\View\Helper\FormRowElements',
+                'form'                  => 'LemoBootstrap\Form\View\Helper\Form',
+                'formCollection'        => 'LemoBootstrap\Form\View\Helper\FormCollection',
+                'formElement'           => 'LemoBootstrap\Form\View\Helper\FormElement',
+                'formElementHelpBlock'  => 'LemoBootstrap\Form\View\Helper\FormElementHelpBlock',
+                'formElementHelpInline' => 'LemoBootstrap\Form\View\Helper\FormElementHelpInline',
+                'formLabel'             => 'LemoBootstrap\Form\View\Helper\FormLabel',
+                'formRow'               => 'LemoBootstrap\Form\View\Helper\FormRow',
+                'formRowElements'       => 'LemoBootstrap\Form\View\Helper\FormRowElements',
             )
         );
     }
