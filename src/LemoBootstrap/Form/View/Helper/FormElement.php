@@ -34,6 +34,7 @@ class FormElement extends FormElementHelper
     {
         $escapeHtmlHelper = $this->getEscapeHtmlHelper();
 
+        $id   = $element->getAttribute('id') ? : $element->getAttribute('name');
         $type = strtolower($element->getAttribute('type'));
 
         // Add class to value options for multicheckbox and radio elements
@@ -63,6 +64,8 @@ class FormElement extends FormElementHelper
 
             $element->setValueOptions($valueOptionsUpd);
         }
+
+        $element->setAttribute('id', $id);
 
         $elementString = parent::render($element);
         $insertString = array();

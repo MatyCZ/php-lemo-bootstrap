@@ -54,7 +54,6 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, Co
             'invokables' => array(
 //                'flashMessanger'     => 'LemoBootstrap\View\Helper\FlashMessanger',
                 'form'                  => 'LemoBootstrap\Form\View\Helper\Form',
-                'formCollection'        => 'LemoBootstrap\Form\View\Helper\FormCollection',
                 'formElement'           => 'LemoBootstrap\Form\View\Helper\FormElement',
                 'formElementHelpBlock'  => 'LemoBootstrap\Form\View\Helper\FormElementHelpBlock',
                 'formElementHelpInline' => 'LemoBootstrap\Form\View\Helper\FormElementHelpInline',

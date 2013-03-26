@@ -76,13 +76,6 @@ class FormRow extends FormRowHelper
         $elementString = '<div class="controls">' . $elementString . '</div>';
 
         if (isset($label) && '' !== $label) {
-            // Translate the label
-            if (null !== ($translator = $this->getTranslator())) {
-                $label = $translator->translate(
-                    $label, $this->getTranslatorTextDomain()
-                );
-            }
-
             $label = $helperEscapeHtml($label);
             $labelAttributes = $element->getLabelAttributes();
 
@@ -93,14 +86,8 @@ class FormRow extends FormRowHelper
                 $labelAttributes['for'] = $this->getId($element);
             }
 
-            if ($element->hasAttribute('id')) {
-                $labelOpen = '';
-                $labelClose = '';
-                $label = $helperLabel($element);
-            } else {
-                $labelOpen  = $helperLabel->openTag($labelAttributes);
-                $labelClose = $helperLabel->closeTag();
-            }
+            $labelOpen  = $helperLabel->openTag($labelAttributes);
+            $labelClose = $helperLabel->closeTag();
 
             switch ($this->labelPosition) {
                 case self::LABEL_PREPEND:
