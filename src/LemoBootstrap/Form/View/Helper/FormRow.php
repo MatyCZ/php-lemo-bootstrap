@@ -23,12 +23,39 @@ class FormRow extends FormRowHelper
     /**
      * @var string
      */
-    protected $labelPosition = null;
+    protected $labelPosition = 'ss';
 
     /**
      * @var string
      */
     protected $status;
+
+    /**
+     * Invoke helper as functor
+     *
+     * Proxies to {@link render()}.
+     *
+     * @param null|ElementInterface $element
+     * @param null|string           $labelPosition
+     * @param bool                  $renderErrors
+     * @return string|FormRow
+     */
+    public function __invoke(ElementInterface $element = null, $labelPosition = null, $renderErrors = null)
+    {
+        if (!$element) {
+            return $this;
+        }
+
+        if ($labelPosition !== null) {
+            $this->setLabelPosition($labelPosition);
+        }
+
+        if ($renderErrors !== null){
+            $this->setRenderErrors($renderErrors);
+        }
+
+        return $this->render($element);
+    }
 
     /**
      * Utility form helper that renders a label (if it exists), an element and errors
@@ -89,7 +116,7 @@ class FormRow extends FormRowHelper
             $labelOpen  = $helperLabel->openTag($labelAttributes);
             $labelClose = $helperLabel->closeTag();
 
-            switch ($this->labelPosition) {
+            switch ($this->getLabelPosition()) {
                 case self::LABEL_PREPEND:
                     $elementString = $labelOpen . $label . $elementString . $labelClose;
                     break;
