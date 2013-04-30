@@ -119,7 +119,7 @@ class FormLabel extends AbstractHelper
             if (empty($label)) {
                 throw new Exception\DomainException(sprintf(
                     '%s expects either label content as the second argument, ' .
-                    'or that the element provided has a label attribute; neither found',
+                        'or that the element provided has a label attribute; neither found',
                     __METHOD__
                 ));
             }
