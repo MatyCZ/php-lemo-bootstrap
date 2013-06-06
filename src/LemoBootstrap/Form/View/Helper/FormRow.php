@@ -38,9 +38,10 @@ class FormRow extends FormRowHelper
      * @param null|ElementInterface $element
      * @param null|string           $labelPosition
      * @param bool                  $renderErrors
+     * @param null|string           $partial
      * @return string|FormRow
      */
-    public function __invoke(ElementInterface $element = null, $labelPosition = null, $renderErrors = null)
+    public function __invoke(ElementInterface $element = null, $labelPosition = null, $renderErrors = null, $partial = null)
     {
         if (!$element) {
             return $this;
@@ -52,6 +53,10 @@ class FormRow extends FormRowHelper
 
         if ($renderErrors !== null){
             $this->setRenderErrors($renderErrors);
+        }
+
+        if ($partial !== null) {
+            $this->setPartial($partial);
         }
 
         return $this->render($element);
