@@ -5,6 +5,7 @@ namespace LemoBootstrap\Form\View\Helper;
 use LemoBootstrap\Exception;
 use LemoBootstrap\Form\View\Helper\FormElementHelpBlock;
 use LemoBootstrap\Form\View\Helper\FormElementHelpInline;
+use Zend\Form\Element\Hidden;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\FormRow as FormRowHelper;
 
@@ -23,7 +24,7 @@ class FormRow extends FormRowHelper
     /**
      * @var string
      */
-    protected $labelPosition = 'ss';
+    protected $labelPosition = 'xxx';
 
     /**
      * @var string
@@ -135,12 +136,12 @@ class FormRow extends FormRowHelper
         }
 
         $hideCondition = '';
-        if(true === $element->getOption('hide')) {
+        if(true === $element->getOption('hide') || $element instanceof Hidden) {
             $hideCondition = ' hide';
         }
 
         return sprintf(
-            '<div class="control-group %s %s" id="control-group-%s">%s</div>',
+            '<div class="control-group%s%s" id="control-group-%s">%s</div>',
             $this->getStatus(),
             $hideCondition,
             $this->getId($element),
