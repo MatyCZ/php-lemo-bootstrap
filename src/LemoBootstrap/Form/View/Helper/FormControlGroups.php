@@ -131,8 +131,10 @@ class FormControlGroups extends AbstractHelper
             }
         }
 
+        $templateId = $collection->getName();
+
         return sprintf(
-            '<span data-template="%s"></span>',
+            '<span id="control-template-' . $templateId . '" data-template="%s"></span>',
             $escapeHtmlAttribHelper($templateMarkup)
         );
     }
