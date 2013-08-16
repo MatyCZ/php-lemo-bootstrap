@@ -112,10 +112,10 @@ class FormControlLabel extends AbstractHelper
                     $attributes['class'] = trim($attributes['class'] . ' ' . 'control-label');
                 }
             } else {
-                $attributes['class'] = 'control-label';
+                $attributes['class'] = 'control-label col-lg-4';
             }
         } else {
-            $attributes['class'] = 'control-label';
+            $attributes['class'] = 'control-label col-lg-4';
         }
 
         $attributes = $this->createAttributesString($attributes);
