@@ -7,7 +7,7 @@ use Zend\Form\ElementInterface;
 use Zend\Form\Element\Collection as CollectionElement;
 use Zend\Form\FieldsetInterface;
 use Zend\Form\View\Helper\AbstractHelper;
-use Zend\Form\View\Helper\FormElement;
+use Zend\Form\View\Helper\FormElement as ZendFormElement;
 
 class FormControlGroups extends AbstractHelper
 {
@@ -24,7 +24,7 @@ class FormControlGroups extends AbstractHelper
     protected $helperControlGroup;
 
     /**
-     * @var FormElement
+     * @var ZendFormElement
      */
     protected $helperElement;
 
@@ -134,7 +134,7 @@ class FormControlGroups extends AbstractHelper
         $templateId = $collection->getName();
 
         return sprintf(
-            '<span id="control-template-' . $templateId . '" data-template="%s"></span>',
+            '<span id="form-template-' . $templateId . '" data-template="%s"></span>',
             $escapeHtmlAttribHelper($templateMarkup)
         );
     }
@@ -162,7 +162,7 @@ class FormControlGroups extends AbstractHelper
     /**
      * Retrieve the FormElement helper
      *
-     * @return FormElement
+     * @return ZendFormElement
      */
     protected function getHelperElement()
     {
@@ -174,8 +174,8 @@ class FormControlGroups extends AbstractHelper
             $this->helperElement = $this->getView()->plugin('form_element');
         }
 
-        if (!$this->helperElement instanceof FormElement) {
-            $this->helperElement = new FormElement();
+        if (!$this->helperElement instanceof ZendFormElement) {
+            $this->helperElement = new ZendFormElement();
         }
 
         $this->helperElement->setView($this->getView());

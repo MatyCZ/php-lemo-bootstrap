@@ -4,24 +4,26 @@ namespace LemoBootstrap\Form\View\Helper;
 
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\AbstractHelper;
-use Zend\Form\View\Helper\FormElement;
+use Zend\Form\View\Helper\FormElement as ZendFormElement;
 
 class FormControls extends AbstractHelper
 {
     /**
-     * @var FormElement
+     * @var ZendFormElement
      */
     protected $helperElement;
 
     /**
      * @var string
      */
-    protected $templateCloseTag = '</div>';
+//    protected $templateCloseTag = '</div>';
+    protected $templateCloseTag = '';
 
     /**
      * @var string
      */
-    protected $templateOpenTag = '<div class="controls">';
+//    protected $templateOpenTag = '<div class="controls">';
+    protected $templateOpenTag = '';
 
     /**
      * Render form controls
@@ -91,7 +93,7 @@ class FormControls extends AbstractHelper
     /**
      * Retrieve the FormElement helper
      *
-     * @return FormElement
+     * @return ZendFormElement
      */
     protected function getHelperElement()
     {
@@ -103,8 +105,8 @@ class FormControls extends AbstractHelper
             $this->helperElement = $this->getView()->plugin('form_element');
         }
 
-        if (!$this->helperElement instanceof FormElement) {
-            $this->helperElement = new FormElement();
+        if (!$this->helperElement instanceof ZendFormElement) {
+            $this->helperElement = new ZendFormElement();
         }
 
         $this->helperElement->setView($this->getView());
