@@ -14,7 +14,7 @@ class FlashMessanger extends AbstractHelper
      */
     protected $classMessages = array(
         FlashMessengerPlugin::NAMESPACE_DEFAULT => 'alert alert-info',
-        FlashMessengerPlugin::NAMESPACE_ERROR   => 'alert alert-error',
+        FlashMessengerPlugin::NAMESPACE_ERROR   => 'alert alert-danger',
         FlashMessengerPlugin::NAMESPACE_INFO    => 'alert alert-info',
         FlashMessengerPlugin::NAMESPACE_SUCCESS => 'alert alert-success',
         FlashMessengerPlugin::NAMESPACE_WARNING => 'alert alert-warning',
