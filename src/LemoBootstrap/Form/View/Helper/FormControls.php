@@ -16,12 +16,14 @@ class FormControls extends AbstractHelper
     /**
      * @var string
      */
-    protected $templateCloseTag = '</div>';
+//    protected $templateCloseTag = '</div>';
+    protected $templateCloseTag = '';
 
     /**
      * @var string
      */
-    protected $templateOpenTag = '<div class="controls">';
+//    protected $templateOpenTag = '<div class="controls">';
+    protected $templateOpenTag = '';
 
     /**
      * Render form controls
@@ -53,10 +55,10 @@ class FormControls extends AbstractHelper
 
         if (is_array($element) || $element instanceof \Traversable) {
             foreach ($element as $el) {
-                $content .= $helperElement($el);
+                $content .= $helperElement($el) . PHP_EOL;
             }
         } else {
-            $content .= $helperElement($element);
+            $content .= $helperElement($element) . PHP_EOL;
         }
 
         return $this->openTag($element) . $content . $this->closeTag();

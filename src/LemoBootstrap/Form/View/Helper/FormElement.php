@@ -25,6 +25,20 @@ class FormElement extends FormElementHelper
     );
 
     /**
+     * @var FormElementAppend
+     */
+    protected $helperElementAppend;
+
+    /**
+     * @var FormElementHelpBlock
+     */
+    protected $helperElementHelpBlock;
+    /**
+     * @var FormElementPrepend
+     */
+    protected $helperElementPrepend;
+
+    /**
      * Render
      *
      * @param ElementInterface $element
@@ -33,6 +47,9 @@ class FormElement extends FormElementHelper
     public function render(ElementInterface $element)
     {
         $escapeHtmlHelper = $this->getEscapeHtmlHelper();
+        $helperElementAppend = $this->getHelperElementAppend();
+        $helperElementHelpBlock  = $this->getHelperElementHelpBlock();
+        $helperElementPrepend = $this->getHelperElementPrepend();
 
         $id   = $element->getAttribute('id') ? : $element->getAttribute('name');
         $type = strtolower($element->getAttribute('type'));
@@ -67,41 +84,31 @@ class FormElement extends FormElementHelper
 
         $element->setAttribute('id', $id);
 
-        $elementString = parent::render($element);
-        $insertString = array();
+        $content = '';
 
-        foreach(array('prepend', 'append') as $key) {
-            if (array_key_exists($key, $element->getOptions())) {
-                $options = $element->getOption($key);
-
-                if (!is_array($options)) {
-                    $options = (array) $options;
-                }
-
-                foreach ($options as $option) {
-                    $insertString['input-' . $key][] = '<span class="add-on">' . $escapeHtmlHelper($option) . '</span>';
-                }
-            }
+        if (null !== $element->getOption('append') || null !== $element->getOption('prepend')) {
+            $content .= '<div class="input-group">' . PHP_EOL;
         }
 
-        if(!empty($insertString)) {
-            $wrapperOpen = '<div class="' . implode(' ', array_keys($insertString)) . '">';
-            $wrapperClose = '</div>';
+        $content .= $helperElementPrepend($element) . PHP_EOL;
+        $content .= parent::render($element) . PHP_EOL;
+        $content .= $helperElementAppend($element) . PHP_EOL;
 
-            $prepend = null;
-            $append = null;
-
-            if(array_key_exists('input-prepend', $insertString)) {
-                $prepend = implode(PHP_EOL, $insertString['input-prepend']);
-            }
-            if(array_key_exists('input-append', $insertString)) {
-                $append = implode(PHP_EOL, $insertString['input-append']);
-            }
-
-            $elementString = $wrapperOpen . $prepend . $elementString . $append . $wrapperClose;
+        if (null !== $element->getOption('append') || null !== $element->getOption('prepend')) {
+            $content .= '</div>' . PHP_EOL;
         }
 
-        return $elementString;
+        if (count($element->getMessages()) > 0) {
+            $options = $element->getOptions();
+
+            $options['help-block'] = implode('<br />', $element->getMessages() );
+
+            $element->setOptions($options);
+        }
+
+        $content .= $helperElementHelpBlock($element) . PHP_EOL;
+
+        return $content;
     }
 
     /**
@@ -124,5 +131,67 @@ class FormElement extends FormElementHelper
         }
 
         return $this->escapeHtmlHelper;
+    }
+
+    /**
+     * Retrieve the FormElementAppend helper
+     *
+     * @return FormElementAppend
+     */
+    protected function getHelperElementAppend()
+    {
+        if ($this->helperElementAppend) {
+            return $this->helperElementAppend;
+        }
+
+        if (!$this->helperElementAppend instanceof FormElementAppend) {
+            $this->helperElementAppend = new FormElementAppend();
+        }
+
+        $this->helperElementAppend->setView($this->getView());
+
+        return $this->helperElementAppend;
+    }
+
+    /**
+     * Retrieve the FormElementHelpBlock helper
+     *
+     * @return FormElementHelpBlock
+     */
+    protected function getHelperElementHelpBlock()
+    {
+        if ($this->helperElementHelpBlock) {
+            return $this->helperElementHelpBlock;
+        }
+
+        if (method_exists($this->view, 'plugin')) {
+            $this->helperElementHelpBlock = $this->view->plugin('form_element_help_block');
+        }
+
+        if (!$this->helperElementHelpBlock instanceof FormElementHelpBlock) {
+            $this->helperElementHelpBlock = new FormElementHelpBlock();
+        }
+
+        return $this->helperElementHelpBlock;
+    }
+
+    /**
+     * Retrieve the FormElementPrepend helper
+     *
+     * @return FormElementPrepend
+     */
+    protected function getHelperElementPrepend()
+    {
+        if ($this->helperElementPrepend) {
+            return $this->helperElementPrepend;
+        }
+
+        if (!$this->helperElementPrepend instanceof FormElementPrepend) {
+            $this->helperElementPrepend = new FormElementPrepend();
+        }
+
+        $this->helperElementPrepend->setView($this->getView());
+
+        return $this->helperElementPrepend;
     }
 }

@@ -28,7 +28,7 @@ class FormControlGroup extends AbstractHelper
     /**
      * @var string
      */
-    protected $templateOpenTag = '<div class="form-group%s" id="form-group-%s">';
+    protected $templateOpenTag = '<div class="form-group%s%s" id="form-group-%s">';
 
     /**
      * Display a Form
@@ -60,7 +60,7 @@ class FormControlGroup extends AbstractHelper
             }
         }
 
-        $content .= $helperControls($element);
+        $content .= '<div class="col-lg-8">' . $helperControls($element) . '</div>';
 
         return $this->openTag($element) . $content . $this->closeTag();
     }
@@ -74,11 +74,17 @@ class FormControlGroup extends AbstractHelper
     public function openTag(ElementInterface $element)
     {
         $id = $element->getAttribute('id') ? : $element->getName();
-        $hide = $element->getOption('hide') ? ' hide' : null;
+        $classHide = $element->getOption('hide') ? ' hide' : null;
+        $classError = null;
+
+        if (count($element->getMessages()) > 0) {
+            $classError = ' has-error';
+        }
 
         return sprintf(
             $this->templateOpenTag,
-            $hide,
+            $classHide,
+            $classError,
             $id
         );
     }
