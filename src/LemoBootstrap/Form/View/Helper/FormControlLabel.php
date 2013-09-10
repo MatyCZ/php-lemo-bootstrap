@@ -4,6 +4,7 @@ namespace LemoBootstrap\Form\View\Helper;
 
 use LemoBootstrap\Exception;
 use Zend\Form\ElementInterface;
+use Zend\Form\Form;
 use Zend\Form\View\Helper\AbstractHelper;
 
 class FormControlLabel extends AbstractHelper
@@ -68,6 +69,22 @@ class FormControlLabel extends AbstractHelper
 
         if ($label && null === $labelContent) {
             $labelContent = $label;
+        }
+
+        // Najdeme si formular
+        $inputFilter = null;
+        foreach ($this->getView()->vars() as $var) {
+
+            if ($var instanceof Form) {
+                $inputFilter = $var->getInputFilter();
+            }
+        }
+
+        // ELement je povinny, pridame hvezdicku
+        if ($inputFilter->has($element->getName())) {
+            if (true === $inputFilter->get($element->getName())->isRequired()) {
+                $labelContent .= '&nbsp;<em class="required">*</em>';
+            }
         }
 
         return $this->openTag($element) . $labelContent . $this->closeTag();
