@@ -33,6 +33,7 @@ class FormElement extends FormElementHelper
      * @var FormElementHelpBlock
      */
     protected $helperElementHelpBlock;
+
     /**
      * @var FormElementPrepend
      */
@@ -53,38 +54,17 @@ class FormElement extends FormElementHelper
 
         $id   = $element->getAttribute('id') ? : $element->getAttribute('name');
         $type = strtolower($element->getAttribute('type'));
+        $classCheckboxOrRadio = null;
+        $content = '';
 
         // Add class to value options for multicheckbox and radio elements
         if (in_array($type, $this->elementsValueOptions)) {
-            $class = ($type === 'radio') ? 'radio' : 'checkbox';
+            $classCheckboxOrRadio = ($type === 'radio') ? 'radio' : 'checkbox';
 
-            $valueOptions = $element->getValueOptions();
-            $valueOptionsUpd = array();
-
-            foreach($valueOptions as $key => $spec) {
-                if(!is_array($spec)) {
-                    $valueOptionsUpd[] = array(
-                        'label' => $spec,
-                        'label_attributes' => array('class' => $class),
-                        'value' => $key,
-                    );
-                } else {
-                    if(array_key_exists('label_attributes', $spec) && array_key_exists('class', $spec['label_attributes'])) {
-                        if(false === strpos($spec['label_attributes'], $class)) {
-                            $spec['label_attributes']['class'] = trim($spec['label_attributes'] . ' ' . $class);
-                        }
-                    } else {
-                        $spec['label_attributes'] = array('class' => $class);
-                    }
-                }
-            }
-
-            $element->setValueOptions($valueOptionsUpd);
+            $content = '<div class="' . $classCheckboxOrRadio . '">';
         }
 
         $element->setAttribute('id', $id);
-
-        $content = '';
 
         if (null !== $element->getOption('append') || null !== $element->getOption('prepend')) {
             $content .= '<div class="input-group">' . PHP_EOL;
@@ -93,6 +73,11 @@ class FormElement extends FormElementHelper
         $content .= $helperElementPrepend($element) . PHP_EOL;
         $content .= parent::render($element) . PHP_EOL;
         $content .= $helperElementAppend($element) . PHP_EOL;
+
+        if (in_array($type, $this->elementsValueOptions)) {
+            $content = str_replace('/label><label', '/label></div><div class="' . $classCheckboxOrRadio . '"><label', $content);
+            $content .= '</div>' . PHP_EOL;
+        }
 
         if (null !== $element->getOption('append') || null !== $element->getOption('prepend')) {
             $content .= '</div>' . PHP_EOL;
