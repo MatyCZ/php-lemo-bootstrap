@@ -57,6 +57,19 @@ class FormElement extends FormElementHelper
         $classCheckboxOrRadio = null;
         $content = '';
 
+        // Renderovani datumu dle locale
+        if ($element->getValue() instanceof \DateTime) {
+            $formatter = new \IntlDateFormatter(
+                \Locale::getDefault(),
+                \IntlDateFormatter::MEDIUM,
+                \IntlDateFormatter::NONE,
+                $element->getValue()->getTimezone()->getName(),
+                \IntlDateFormatter::GREGORIAN
+            );
+
+            $element->setValue($formatter->format($element->getValue()));
+        }
+
         // Add class to value options for multicheckbox and radio elements
         if (in_array($type, $this->elementsValueOptions)) {
             $classCheckboxOrRadio = ($type === 'radio') ? 'radio' : 'checkbox';

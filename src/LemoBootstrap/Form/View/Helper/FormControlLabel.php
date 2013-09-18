@@ -4,7 +4,7 @@ namespace LemoBootstrap\Form\View\Helper;
 
 use LemoBootstrap\Exception;
 use Zend\Form\ElementInterface;
-use Zend\Form\Form;
+use Zend\Form\Form as ZendForm;
 use Zend\Form\View\Helper\AbstractHelper;
 
 class FormControlLabel extends AbstractHelper
@@ -75,7 +75,7 @@ class FormControlLabel extends AbstractHelper
         $inputFilter = null;
         foreach ($this->getView()->vars() as $var) {
 
-            if ($var instanceof Form) {
+            if ($var instanceof ZendForm) {
                 $inputFilter = $var->getInputFilter();
             }
         }
