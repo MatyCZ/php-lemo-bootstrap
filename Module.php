@@ -6,10 +6,8 @@ use Zend\Loader\AutoloaderFactory;
 use Zend\Loader\StandardAutoloader;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
-use Zend\ModuleManager\Feature\ControllerPluginProviderInterface;
-use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 
-class Module implements AutoloaderProviderInterface, ConfigProviderInterface, ControllerPluginProviderInterface, ViewHelperProviderInterface
+class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
     /**
      * @inheritdoc
@@ -31,40 +29,5 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, Co
     public function getConfig($env = null)
     {
         return include __DIR__ . '/config/module.config.php';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getControllerPluginConfig()
-    {
-        return array(
-            'invokables' => array(
-                'lemoFlashMessenger' => 'LemoBootstrap\Controller\Plugin\FlashMessenger',
-            ),
-        );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getViewHelperConfig()
-    {
-        return array(
-            'invokables' => array(
-//                'flashMessanger'     => 'LemoBootstrap\View\Helper\FlashMessanger',
-                'form'                  => 'LemoBootstrap\Form\View\Helper\Form',
-                'formControlGroup'      => 'LemoBootstrap\Form\View\Helper\FormControlGroup',
-                'formControlGroups'     => 'LemoBootstrap\Form\View\Helper\FormControlGroups',
-                'formControlLabel'      => 'LemoBootstrap\Form\View\Helper\FormControlLabel',
-                'formControls'          => 'LemoBootstrap\Form\View\Helper\FormControls',
-                'formElement'           => 'LemoBootstrap\Form\View\Helper\FormElement',
-                'formElementHelpBlock'  => 'LemoBootstrap\Form\View\Helper\FormElementHelpBlock',
-                'formElementHelpInline' => 'LemoBootstrap\Form\View\Helper\FormElementHelpInline',
-                'formLabel'             => 'LemoBootstrap\Form\View\Helper\FormLabel',
-                'formRow'               => 'LemoBootstrap\Form\View\Helper\FormRow',
-                'formRowElements'       => 'LemoBootstrap\Form\View\Helper\FormRowElements',
-            )
-        );
     }
 }

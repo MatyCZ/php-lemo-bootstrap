@@ -115,6 +115,7 @@ class FormControlGroup extends AbstractHelper
         }
 
         $this->helperControls->setView($this->getView());
+        $this->helperControls->setTranslator($this->getTranslator());
 
         return $this->helperControls;
     }
@@ -135,6 +136,7 @@ class FormControlGroup extends AbstractHelper
         }
 
         $this->helperControlLabel->setView($this->getView());
+        $this->helperControlLabel->setTranslator($this->getTranslator());
 
         return $this->helperControlLabel;
     }
