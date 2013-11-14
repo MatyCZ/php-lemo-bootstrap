@@ -4,6 +4,7 @@ namespace LemoBootstrap\Form\View\Helper;
 
 use LemoBootstrap\Form\View\Helper\FormControlLabel;
 use LemoBootstrap\Form\View\Helper\FormControls;
+use Zend\Form\Element\Hidden;
 use Zend\Form\ElementInterface;
 use Zend\Form\FieldsetInterface;
 use Zend\Form\View\Helper\AbstractHelper;
@@ -74,9 +75,12 @@ class FormControlGroup extends AbstractHelper
     public function openTag(ElementInterface $element)
     {
         $id = $element->getAttribute('id') ? : $element->getName();
-        $classHide = $element->getOption('hide') ? ' hide' : null;
+        $classHide = $element->getOption('hidden') ? ' hidden' : null;
         $classError = null;
 
+        if ($element instanceof Hidden) {
+            $classHide = ' hidden';
+        }
         if (count($element->getMessages()) > 0) {
             $classError = ' has-error';
         }
