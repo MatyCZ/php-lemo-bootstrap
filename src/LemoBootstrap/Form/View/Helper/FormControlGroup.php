@@ -35,33 +35,41 @@ class FormControlGroup extends AbstractHelper
      * Display a Form
      *
      * @param  ElementInterface $element
-     * @param  null|string   $formStyle
+     * @param  null|int      $size
      * @return string
      */
-    public function __invoke(ElementInterface $element, $formStyle = null)
+    public function __invoke(ElementInterface $element, $size = 12)
     {
-        return $this->render($element);
+        return $this->render($element, $size);
     }
 
-    public function render(ElementInterface $element)
+    public function render(ElementInterface $element, $size = 12)
     {
         $helperLabel = $this->getHelperControlLabel();
         $helperControls = $this->getHelperControls();
+
+        if ($size == 12) {
+            $sizeLabel = 2;
+            $sizeElement = 10;
+        } else {
+            $sizeLabel = 4;
+            $sizeElement = 8;
+        }
 
         $content = '';
         if ($element instanceof FieldsetInterface) {
             $first = $element->getIterator()->top();
 
             if ('' != $first->getLabel()) {
-                $content .= $helperLabel($first);
+                $content .= $helperLabel($first, null, null, $sizeLabel);
             }
         } else {
             if ('' != $element->getLabel()) {
-                $content .= $helperLabel($element);
+                $content .= $helperLabel($element, null, null, $sizeLabel);
             }
         }
 
-        $content .= '<div class="col-lg-8">' . $helperControls($element) . '</div>';
+        $content .= '<div class="col-lg-' . $sizeElement . '">' . $helperControls($element) . '</div>';
 
         return $this->openTag($element) . $content . $this->closeTag();
     }

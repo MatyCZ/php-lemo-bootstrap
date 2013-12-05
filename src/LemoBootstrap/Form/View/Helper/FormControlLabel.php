@@ -26,12 +26,13 @@ class FormControlLabel extends AbstractHelper
      * will be provided in the $labelContent.
      *
      * @param  ElementInterface $element
-     * @param  null|string $labelContent
-     * @param  string $position
+     * @param  null|string      $labelContent
+     * @param  string           $position
+     * @param  int              $size
      * @throws Exception\DomainException
      * @return string|FormLabel
      */
-    public function __invoke(ElementInterface $element = null, $labelContent = null, $position = null)
+    public function __invoke(ElementInterface $element = null, $labelContent = null, $position = null, $size = 4)
     {
         if (!$element) {
             return $this;
@@ -87,18 +88,19 @@ class FormControlLabel extends AbstractHelper
             }
         }
 
-        return $this->openTag($element) . $labelContent . $this->closeTag();
+        return $this->openTag($element, $size) . $labelContent . $this->closeTag();
     }
 
     /**
      * Generate an opening label tag
      *
      * @param  null|array|ElementInterface $attributesOrElement
+     * @param  null|int                    $size
      * @throws Exception\InvalidArgumentException
      * @throws Exception\DomainException
      * @return string
      */
-    public function openTag($attributesOrElement = null)
+    public function openTag($attributesOrElement = null, $size = 4)
     {
         if (!is_array($attributesOrElement) && !$attributesOrElement instanceof ElementInterface) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -129,10 +131,10 @@ class FormControlLabel extends AbstractHelper
                     $attributes['class'] = trim($attributes['class'] . ' ' . 'control-label');
                 }
             } else {
-                $attributes['class'] = 'control-label col-lg-4';
+                $attributes['class'] = 'control-label col-lg-' . $size;
             }
         } else {
-            $attributes['class'] = 'control-label col-lg-4';
+            $attributes['class'] = 'control-label col-lg-' . $size;
         }
 
         $attributes = $this->createAttributesString($attributes);

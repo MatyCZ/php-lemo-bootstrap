@@ -38,10 +38,11 @@ class FormControlGroups extends AbstractHelper
      * Proxies to {@link render()}.
      *
      * @param  ElementInterface|null $element
+     * @param  null|int              $size
      * @param  bool                  $renderAsInline
      * @return string|FormControlGroups
      */
-    public function __invoke(ElementInterface $element = null, $renderAsInline = false)
+    public function __invoke(ElementInterface $element = null, $size = 12, $renderAsInline = false)
     {
         if (!$element) {
             return $this;
@@ -49,17 +50,18 @@ class FormControlGroups extends AbstractHelper
 
         $this->renderAsInline = $renderAsInline;
 
-        return $this->render($element, $renderAsInline);
+        return $this->render($element, $size, $renderAsInline);
     }
 
     /**
      * Render a collection by iterating through all fieldsets and elements
      *
      * @param  ElementInterface $element
+     * @param  null|int         $size
      * @param  bool             $renderAsInline
      * @return string
      */
-    public function render(ElementInterface $element, $renderAsInline = false)
+    public function render(ElementInterface $element, $size = 12, $renderAsInline = false)
     {
         $renderer = $this->getView();
         if (!method_exists($renderer, 'plugin')) {
@@ -75,21 +77,21 @@ class FormControlGroups extends AbstractHelper
         $fieldsetHelper   = $this->getFieldsetHelper();
 
         if ($element instanceof CollectionElement && $element->shouldCreateTemplate()) {
-            $templateMarkup = $this->renderTemplate($element);
+            $templateMarkup = $this->renderTemplate($element, $size);
         }
 
         foreach ($element->getIterator() as $elementOrFieldset) {
             if ($elementOrFieldset instanceof FieldsetInterface) {
                 if (true === $this->renderAsInline) {
-                    $markup .= $helperControlGroup($elementOrFieldset);
+                    $markup .= $helperControlGroup($elementOrFieldset, $size);
                 } else {
                     $markup .= $fieldsetHelper($elementOrFieldset);
                 }
             } elseif ($elementOrFieldset instanceof ElementInterface) {
                 if (true === $this->renderAsInline) {
-                    $markup .= $helperControlGroup($elementOrFieldset);
+                    $markup .= $helperControlGroup($elementOrFieldset, $size);
                 } else {
-                    $markup .= $helperControlGroup($elementOrFieldset);
+                    $markup .= $helperControlGroup($elementOrFieldset, $size);
                 }
             }
         }
@@ -106,9 +108,10 @@ class FormControlGroups extends AbstractHelper
      * Only render a template
      *
      * @param  CollectionElement $collection
+     * @param  null|int          $size
      * @return string
      */
-    public function renderTemplate(CollectionElement $collection)
+    public function renderTemplate(CollectionElement $collection, $size = 12)
     {
         $elementHelper          = $this->getHelperElement();
         $escapeHtmlAttribHelper = $this->getEscapeHtmlAttrHelper();
@@ -119,15 +122,15 @@ class FormControlGroups extends AbstractHelper
 
         if ($elementOrFieldset instanceof FieldsetInterface) {
             if (true === $this->renderAsInline) {
-                $templateMarkup .= $helperControlGroup($elementOrFieldset);
+                $templateMarkup .= $helperControlGroup($elementOrFieldset, $size);
             } else {
                 $templateMarkup .= $this->render($elementOrFieldset);
             }
         } elseif ($elementOrFieldset instanceof ElementInterface) {
             if (true === $this->renderAsInline) {
-                $templateMarkup .= $helperControlGroup($elementOrFieldset);
+                $templateMarkup .= $helperControlGroup($elementOrFieldset, $size);
             } else {
-                $templateMarkup .= $helperControlGroup($elementOrFieldset);
+                $templateMarkup .= $helperControlGroup($elementOrFieldset, $size);
             }
         }
 
