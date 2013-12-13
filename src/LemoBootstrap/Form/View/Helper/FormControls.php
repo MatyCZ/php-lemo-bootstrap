@@ -2,16 +2,16 @@
 
 namespace LemoBootstrap\Form\View\Helper;
 
+use LemoBootstrap\Form\View\Helper\FormControl;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\AbstractHelper;
-use Zend\Form\View\Helper\FormElement as ZendFormElement;
 
 class FormControls extends AbstractHelper
 {
     /**
-     * @var ZendFormElement
+     * @var FormControl
      */
-    protected $helperElement;
+    protected $helperFormControl;
 
     /**
      * @var string
@@ -29,10 +29,9 @@ class FormControls extends AbstractHelper
      * Render form controls
      *
      * @param  null|ElementInterface $element
-     * @param  null|string           $formStyle
      * @return string
      */
-    public function __invoke(ElementInterface $element = null, $formStyle = null)
+    public function __invoke(ElementInterface $element = null)
     {
         if (null === $element) {
             return $this;
@@ -49,23 +48,23 @@ class FormControls extends AbstractHelper
      */
     public function render(ElementInterface $element)
     {
-        $helperElement = $this->getHelperElement();
+        $helperFormControl = $this->getHelperFormControl();
 
         $content = '';
 
         if (is_array($element) || $element instanceof \Traversable) {
             foreach ($element as $el) {
-                $content .= $helperElement($el) . PHP_EOL;
+                $content .= $helperFormControl($el) . PHP_EOL;
             }
         } else {
-            $content .= $helperElement($element) . PHP_EOL;
+            $content .= $helperFormControl($element) . PHP_EOL;
         }
 
         return $this->openTag($element) . $content . $this->closeTag();
     }
 
     /**
-     * Generate an opening form tag
+     * Generate an opening tag
      *
      * @param  ElementInterface $element
      * @return string
@@ -81,7 +80,7 @@ class FormControls extends AbstractHelper
     }
 
     /**
-     * Generate a closing form tag
+     * Generate a closing tag
      *
      * @return string
      */
@@ -91,26 +90,22 @@ class FormControls extends AbstractHelper
     }
 
     /**
-     * Retrieve the FormElement helper
+     * Retrieve the FormControl helper
      *
-     * @return ZendFormElement
+     * @return FormControl
      */
-    protected function getHelperElement()
+    protected function getHelperFormControl()
     {
-        if ($this->helperElement) {
-            return $this->helperElement;
+        if ($this->helperFormControl) {
+            return $this->helperFormControl;
         }
 
-        if (method_exists($this->getView(), 'plugin')) {
-            $this->helperElement = $this->getView()->plugin('form_element');
+        if (!$this->helperFormControl instanceof FormControl) {
+            $this->helperFormControl = new FormControl();
         }
 
-        if (!$this->helperElement instanceof ZendFormElement) {
-            $this->helperElement = new ZendFormElement();
-        }
+        $this->helperFormControl->setView($this->getView());
 
-        $this->helperElement->setView($this->getView());
-
-        return $this->helperElement;
+        return $this->helperFormControl;
     }
 }

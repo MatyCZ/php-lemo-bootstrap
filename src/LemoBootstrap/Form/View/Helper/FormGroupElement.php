@@ -6,10 +6,9 @@ use LemoBootstrap\Form\View\Helper\FormControlLabel;
 use LemoBootstrap\Form\View\Helper\FormControls;
 use Zend\Form\Element\Hidden;
 use Zend\Form\ElementInterface;
-use Zend\Form\FieldsetInterface;
 use Zend\Form\View\Helper\AbstractHelper;
 
-class FormControlGroup extends AbstractHelper
+class FormGroupElement extends AbstractHelper
 {
     /**
      * @var FormControlLabel
@@ -56,22 +55,14 @@ class FormControlGroup extends AbstractHelper
             $sizeElement = 8;
         }
 
-        $content = '';
-        if ($element instanceof FieldsetInterface) {
-            $first = $element->getIterator()->top();
-
-            if ('' != $first->getLabel()) {
-                $content .= $helperLabel($first, null, null, $sizeLabel);
-            }
-        } else {
-            if ('' != $element->getLabel()) {
-                $content .= $helperLabel($element, null, null, $sizeLabel);
-            }
+        $markup = '';
+        if ('' != $element->getLabel()) {
+            $markup .= $helperLabel($element, $sizeLabel);
         }
 
-        $content .= '<div class="col-lg-' . $sizeElement . '">' . $helperControls($element) . '</div>';
+        $markup .= '<div class="col-lg-' . $sizeElement . '">' . $helperControls($element) . '</div>';
 
-        return $this->openTag($element) . $content . $this->closeTag();
+        return $this->openTag($element) . $markup . $this->closeTag();
     }
 
     /**
@@ -112,6 +103,27 @@ class FormControlGroup extends AbstractHelper
     }
 
     /**
+     * Retrieve the FormControlLabel helper
+     *
+     * @return FormControlLabel
+     */
+    protected function getHelperControlLabel()
+    {
+        if ($this->helperControlLabel) {
+            return $this->helperControlLabel;
+        }
+
+        if (!$this->helperControlLabel instanceof FormControlLabel) {
+            $this->helperControlLabel = new FormControlLabel();
+        }
+
+        $this->helperControlLabel->setView($this->getView());
+        $this->helperControlLabel->setTranslator($this->getTranslator());
+
+        return $this->helperControlLabel;
+    }
+
+    /**
      * Retrieve the FormControls helper
      *
      * @return FormControls
@@ -130,26 +142,5 @@ class FormControlGroup extends AbstractHelper
         $this->helperControls->setTranslator($this->getTranslator());
 
         return $this->helperControls;
-    }
-
-    /**
-     * Retrieve the FormLabel helper
-     *
-     * @return FormLabel
-     */
-    protected function getHelperControlLabel()
-    {
-        if ($this->helperControlLabel) {
-            return $this->helperControlLabel;
-        }
-
-        if (!$this->helperControlLabel instanceof FormControlLabel) {
-            $this->helperControlLabel = new FormControlLabel();
-        }
-
-        $this->helperControlLabel->setView($this->getView());
-        $this->helperControlLabel->setTranslator($this->getTranslator());
-
-        return $this->helperControlLabel;
     }
 }

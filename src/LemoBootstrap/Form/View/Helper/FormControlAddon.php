@@ -5,7 +5,7 @@ namespace LemoBootstrap\Form\View\Helper;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\AbstractHelper;
 
-class FormElementAppend extends AbstractHelper
+class FormControlAddon extends AbstractHelper
 {
     /**
      * Template for help
@@ -18,7 +18,7 @@ class FormElementAppend extends AbstractHelper
      * Magical Invoke Method
      *
      * @param  ElementInterface $element
-     * @return string|FormElementAppend
+     * @return string|FormControlAddon
      */
     public function __invoke(ElementInterface $element = null)
     {
@@ -39,8 +39,8 @@ class FormElementAppend extends AbstractHelper
     {
         $string = '';
 
-        if (null !== $element->getOption('append')) {
-            $help = $element->getOption('append');
+        if (null !== $element->getOption('addon')) {
+            $help = $element->getOption('addon');
 
             if (null !== ($translator = $this->getTranslator())) {
                 $help = $translator->translate(
@@ -58,12 +58,11 @@ class FormElementAppend extends AbstractHelper
      * Set template for help
      *
      * @param  string $template
-     * @return FormElementAppend
+     * @return FormControlAddon
      */
     public function setTemplate($template)
     {
         $this->template = (string) $template;
-
         return $this;
     }
 

@@ -6,9 +6,13 @@ use LemoBootstrap\Exception;
 use Zend\Form\ElementInterface;
 use Zend\Form\Form as ZendForm;
 use Zend\Form\View\Helper\AbstractHelper;
+use Zend\InputFilter\InputFilterInterface;
 
 class FormControlLabel extends AbstractHelper
 {
+    const APPEND  = 'append';
+    const PREPEND = 'prepend';
+
     /**
      * Attributes valid for the label tag
      *
@@ -26,13 +30,13 @@ class FormControlLabel extends AbstractHelper
      * will be provided in the $labelContent.
      *
      * @param  ElementInterface $element
+     * @param  int              $size
      * @param  null|string      $labelContent
      * @param  string           $position
-     * @param  int              $size
      * @throws Exception\DomainException
-     * @return string|FormLabel
+     * @return string|FormControlLabel
      */
-    public function __invoke(ElementInterface $element = null, $labelContent = null, $position = null, $size = 4)
+    public function __invoke(ElementInterface $element = null, $size = 4, $labelContent = null, $position = null)
     {
         if (!$element) {
             return $this;
@@ -83,7 +87,7 @@ class FormControlLabel extends AbstractHelper
 
         // ELement je povinny, pridame hvezdicku
         if ($inputFilter->has($element->getName())) {
-            if (true === $inputFilter->get($element->getName())->isRequired()) {
+            if (!$inputFilter->get($element->getName()) instanceof InputFilterInterface && true === $inputFilter->get($element->getName())->isRequired()) {
                 $labelContent .= '&nbsp;<em class="required">*</em>';
             }
         }

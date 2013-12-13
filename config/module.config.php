@@ -8,17 +8,17 @@ return array(
     ),
     'view_helpers' => array(
         'invokables' => array(
-            'form'                  => 'LemoBootstrap\Form\View\Helper\Form',
-            'formControlGroup'      => 'LemoBootstrap\Form\View\Helper\FormControlGroup',
-            'formControlGroups'     => 'LemoBootstrap\Form\View\Helper\FormControlGroups',
+            'htmlButton'            => 'LemoBootstrap\Html\View\Helper\HtmlButton',
+            'htmlGlyphicon'         => 'LemoBootstrap\Html\View\Helper\HtmlGlyphicon',
+            'formControl'           => 'LemoBootstrap\Form\View\Helper\FormControl',
+            'formControlAddon'      => 'LemoBootstrap\Form\View\Helper\FormControlAddon',
+            'formControlHelpBlock'  => 'LemoBootstrap\Form\View\Helper\FormControlHelpBlock',
             'formControlLabel'      => 'LemoBootstrap\Form\View\Helper\FormControlLabel',
             'formControls'          => 'LemoBootstrap\Form\View\Helper\FormControls',
-            'formElement'           => 'LemoBootstrap\Form\View\Helper\FormElement',
-            'formElementHelpBlock'  => 'LemoBootstrap\Form\View\Helper\FormElementHelpBlock',
-            'formElementHelpInline' => 'LemoBootstrap\Form\View\Helper\FormElementHelpInline',
-            'formLabel'             => 'LemoBootstrap\Form\View\Helper\FormLabel',
-            'formRow'               => 'LemoBootstrap\Form\View\Helper\FormRow',
-            'formRowElements'       => 'LemoBootstrap\Form\View\Helper\FormRowElements',
+            'formGroupElement'      => 'LemoBootstrap\Form\View\Helper\FormGroupElement',
+            'formGroupElements'     => 'LemoBootstrap\Form\View\Helper\FormGroupElements',
+            'formGroupsCollection'  => 'LemoBootstrap\Form\View\Helper\FormGroupsCollection',
+            'formGroupsFieldset'    => 'LemoBootstrap\Form\View\Helper\FormGroupsFieldset',
         )
     )
 );

@@ -5,10 +5,10 @@ namespace LemoBootstrap\Form\View\Helper;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\AbstractHelper;
 
-class FormElementHelpBlock extends AbstractHelper
+class FormControlHelpBlock extends AbstractHelper
 {
     /**
-     * Template for help
+     * Template for block help
      *
      * @var string
      */
@@ -18,7 +18,7 @@ class FormElementHelpBlock extends AbstractHelper
      * Magical Invoke Method
      *
      * @param  ElementInterface $element
-     * @return string|FormElementHelpBlock
+     * @return string|FormControlHelpBlock
      */
     public function __invoke(ElementInterface $element = null)
     {
@@ -58,12 +58,11 @@ class FormElementHelpBlock extends AbstractHelper
      * Set template for help
      *
      * @param  string $template
-     * @return FormElementHelpBlock
+     * @return FormControlHelpBlock
      */
     public function setTemplate($template)
     {
         $this->template = (string) $template;
-
         return $this;
     }
 
