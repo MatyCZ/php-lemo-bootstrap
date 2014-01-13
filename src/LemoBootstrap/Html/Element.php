@@ -115,14 +115,11 @@ class Element implements
      */
     public function addAttributeValue($key, $value)
     {
-<<<<<<< Updated upstream
-=======
         if (!isset($this->attributes[$key])) {
             $this->setAttribute($key, $value);
             return $this;
         }
 
->>>>>>> Stashed changes
         $attribute = $this->attributes[$key];
         $attribute = trim($attribute . ' ' . $value);
 
