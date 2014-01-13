@@ -3,7 +3,9 @@
 namespace LemoBootstrap\Form\View\Helper;
 
 use LemoBootstrap\Form\View\Helper\FormGroupElement;
+use LemoBootstrap\Form\View\Helper\FormGroupsCollection;
 use Zend\Form\ElementInterface;
+use Zend\Form\Element\Collection;
 use Zend\Form\FieldsetInterface;
 use Zend\Form\View\Helper\AbstractHelper;
 
@@ -13,6 +15,11 @@ class FormGroupsFieldset extends AbstractHelper
      * @var FormGroupElement
      */
     protected $helperFormGroupElement;
+
+    /**
+     * @var FormGroupsCollection
+     */
+    protected $helperFormGroupsCollection;
 
     /**
      * Invoke helper as function
@@ -47,11 +54,14 @@ class FormGroupsFieldset extends AbstractHelper
         }
 
         $helperFormGroupElement  = $this->getHelperFormGroupElement();
+        $helperFormGroupsCollection  = $this->getHelperFormGroupsCollection();
         $helperFormGroupFieldset = $this;
 
         $markup = '';
         foreach ($fieldset->getIterator() as $elementOrFieldset) {
-            if ($elementOrFieldset instanceof FieldsetInterface) {
+            if ($elementOrFieldset instanceof Collection) {
+                $markup .= $helperFormGroupsCollection($elementOrFieldset, $size);
+            } elseif ($elementOrFieldset instanceof FieldsetInterface) {
                 $markup .= $helperFormGroupFieldset($elementOrFieldset, $size);
             } elseif ($elementOrFieldset instanceof ElementInterface) {
                 $markup .= $helperFormGroupElement($elementOrFieldset, $size);
@@ -80,5 +90,26 @@ class FormGroupsFieldset extends AbstractHelper
         $this->helperFormGroupElement->setTranslator($this->getTranslator());
 
         return $this->helperFormGroupElement;
+    }
+
+    /**
+     * Retrieve the FormGroupsCollection helper
+     *
+     * @return FormGroupsCollection
+     */
+    protected function getHelperFormGroupsCollection()
+    {
+        if ($this->helperFormGroupsCollection) {
+            return $this->helperFormGroupsCollection;
+        }
+
+        if (!$this->helperFormGroupsCollection instanceof FormGroupsCollection) {
+            $this->helperFormGroupsCollection = new FormGroupsCollection();
+        }
+
+        $this->helperFormGroupsCollection->setView($this->getView());
+        $this->helperFormGroupsCollection->setTranslator($this->getTranslator());
+
+        return $this->helperFormGroupsCollection;
     }
 }

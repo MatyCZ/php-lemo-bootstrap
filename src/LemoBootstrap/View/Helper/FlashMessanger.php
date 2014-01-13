@@ -58,15 +58,9 @@ class FlashMessanger extends AbstractHelper
                     $message['text'] = $this->getView()->translate($message['text']);
                 }
             }
-
-            $script[] = "	$.notice({";
-            $script[] = "		type: '" . $message['type'] . "',";
-            $script[] = "		title: '" . $message['title'] . "',";
-            $script[] = "		text: '" . str_replace("'", '`', $message['text']) . "'";
-            $script[] = "	});";
         }
 
-        $xhtml[] = implode(PHP_EOL, $script);
+        $xhtml[] = "Lemo_Alert.build('" .$message['type'] . "', '" .addslashes($message['title']) . "', '" .addslashes(str_replace("'", '`', $message['text'])) . "');";
         $xhtml[] = '</script>';
 
         return implode(PHP_EOL, $xhtml);
