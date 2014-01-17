@@ -73,7 +73,9 @@ class FormGroupElement extends AbstractHelper
      */
     public function openTag(ElementInterface $element)
     {
-        $id = $element->getAttribute('id') ? : $element->getName();
+        $id = $this->getId($element);
+        $id = trim(strtr($id, array('[' => '-', ']' => '')), '-');
+
         $classHide = $element->getOption('hidden') ? ' hidden' : null;
         $classError = null;
 

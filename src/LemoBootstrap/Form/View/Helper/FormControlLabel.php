@@ -115,6 +115,7 @@ class FormControlLabel extends AbstractHelper
         }
 
         $id = $this->getId($attributesOrElement);
+        $id = trim(strtr($id, array('[' => '-', ']' => '')), '-');
         if (null === $id) {
             throw new Exception\DomainException(sprintf(
                 '%s expects the Element provided to have either a name or an id present; neither found',

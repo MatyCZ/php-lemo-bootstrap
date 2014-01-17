@@ -64,7 +64,9 @@ class FormControl extends AbstractHelper
         $helperFormControlAddon = $this->getHelperFormControlAddon();
         $helperFormControlHelpBlock  = $this->getHelperFormControlHelpBlock();
 
-        $id   = $element->getAttribute('id') ? : $element->getAttribute('name');
+        $id = $this->getId($element);
+        $id = trim(strtr($id, array('[' => '-', ']' => '')), '-');
+
         $type = strtolower($element->getAttribute('type'));
         $classCheckboxOrRadio = null;
         $content = '';

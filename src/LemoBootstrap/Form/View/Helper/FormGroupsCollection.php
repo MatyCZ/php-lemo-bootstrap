@@ -99,10 +99,19 @@ class FormGroupsCollection extends AbstractHelper
             $markup .= $helperFormGroupElement($templateElement, $size);
         }
 
+        $id = $this->getId($collection);
+        $id = trim(strtr($id, array('[' => '-', ']' => '')), '-');
+
+        $attributes = array(
+            'id' => 'form-template-' . $id,
+            'data-template' => $helperEscapeHtmlAttr($markup)
+        );
+
+        $attributes = $this->prepareAttributes($attributes);
+
         return sprintf(
-            '<span id="form-template-%s" data-template="%s"></span>',
-            $collection->getName(),
-            $helperEscapeHtmlAttr($markup)
+            '<span %s></span>',
+            $this->createAttributesString($attributes)
         );
     }
 

@@ -16,13 +16,11 @@ class FormControls extends AbstractHelper
     /**
      * @var string
      */
-//    protected $templateCloseTag = '</div>';
     protected $templateCloseTag = '';
 
     /**
      * @var string
      */
-//    protected $templateOpenTag = '<div class="controls">';
     protected $templateOpenTag = '';
 
     /**
@@ -71,7 +69,8 @@ class FormControls extends AbstractHelper
      */
     public function openTag(ElementInterface $element)
     {
-        $id = $element->getAttribute('id') ? : $element->getName();
+        $id = $this->getId($element);
+        $id = trim(strtr($id, array('[' => '-', ']' => '')), '-');
 
         return sprintf(
             $this->templateOpenTag,
