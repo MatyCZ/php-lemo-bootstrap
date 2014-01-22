@@ -86,7 +86,6 @@ class FormGroupsCollection extends AbstractHelper
      */
     public function renderTemplate(Collection $collection, $size = 12)
     {
-        $helperEscapeHtmlAttr = $this->getEscapeHtmlAttrHelper();
         $helperFormGroupElement = $this->getHelperFormGroupElement();
         $helperFormGroupsFieldset = $this->getHelperFormGroupsFieldset();
 
@@ -104,7 +103,7 @@ class FormGroupsCollection extends AbstractHelper
 
         $attributes = array(
             'id' => 'form-template-' . $id,
-            'data-template' => $helperEscapeHtmlAttr($markup)
+            'data-template' => $markup
         );
 
         $attributes = $this->prepareAttributes($attributes);
