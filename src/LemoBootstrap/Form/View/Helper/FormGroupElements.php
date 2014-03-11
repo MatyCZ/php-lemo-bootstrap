@@ -6,6 +6,7 @@ use LemoBootstrap\Form\View\Helper\FormControlLabel;
 use LemoBootstrap\Form\View\Helper\FormControls;
 use Zend\Form\Element\Hidden;
 use Zend\Form\ElementInterface;
+use Zend\Form\Fieldset;
 use Zend\Form\View\Helper\AbstractHelper;
 
 class FormGroupElements extends AbstractHelper
@@ -58,12 +59,18 @@ class FormGroupElements extends AbstractHelper
         $markup = '';
         if ('' != $element->getLabel()) {
             $markup .= $helperControlLabel($element, $sizeLabel);
+        } else {
+            $sizeElement = $size;
         }
 
         $markup .= '<div class="col-lg-' . $sizeElement . '">';
+        $markup .= '    <div class="row">';
         foreach ($element->getElements() as $el) {
-            $markup .= $helperControls($el) . PHP_EOL;
+            $markup .= '    <div class="col-lg-' . round(12 / count($element->getElements())) . '">';
+            $markup .= '        ' . $helperControls($el) . PHP_EOL;
+            $markup .= '    </div>';
         }
+        $markup .= '    </div>';
         $markup .= '</div>';
 
         return $this->openTag($element) . $markup . $this->closeTag();
