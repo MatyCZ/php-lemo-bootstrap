@@ -85,8 +85,8 @@ class FormControlLabel extends AbstractHelper
             }
         }
 
-        // ELement je povinny, pridame hvezdicku
-        if ($inputFilter->has($element->getName())) {
+        // Element je povinny, pridame hvezdicku
+        if ($inputFilter instanceof InputFilterInterface && $inputFilter->has($element->getName())) {
             if (!$inputFilter->get($element->getName()) instanceof InputFilterInterface && true === $inputFilter->get($element->getName())->isRequired()) {
                 $labelContent .= '&nbsp;<em class="required">*</em>';
             }
