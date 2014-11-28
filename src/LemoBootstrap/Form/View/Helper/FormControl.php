@@ -97,19 +97,18 @@ class FormControl extends AbstractHelper
             $content .= '<div class="input-group">' . PHP_EOL;
         }
 
-        $optionsPrepend = $element->getOptions();
-        $optionsAppend = $element->getOptions();
-
-        if (isset($optionsPrepend['prepend'])) {
-            $optionsPrepend['addon'] = $optionsPrepend['prepend'];
-        }
-        if (isset($optionsAppend['append'])) {
-            $optionsAppend['addon'] = $optionsAppend['append'];
+        // Addon - Pre
+        if (null !== $element->getOption('prepend')) {
+            $content .= $helperFormControlAddon($element->setOption('addon', $element->getOption('prepend'))) . PHP_EOL;
         }
 
-        $content .= $helperFormControlAddon($element->setOptions($optionsPrepend)) . PHP_EOL;
+        // Element
         $content .= $helperFormElement($element) . PHP_EOL;
-        $content .= $helperFormControlAddon($element->setOptions($optionsAppend)) . PHP_EOL;
+
+        // Addon - Post
+        if (null !== $element->getOption('append')) {
+            $content .= $helperFormControlAddon($element->setOption('addon', $element->getOption('append'))) . PHP_EOL;
+        }
 
         if (in_array($type, $this->elementsValueOptions)) {
             $content = str_replace('/label><label', '/label></div><div class="' . $classCheckboxOrRadio . '"><label', $content);
@@ -121,11 +120,7 @@ class FormControl extends AbstractHelper
         }
 
         if (count($element->getMessages()) > 0) {
-            $options = $element->getOptions();
-
-            $options['help-block'] = implode('<br />', $element->getMessages() );
-
-            $element->setOptions($options);
+            $element->setOption('help-block', implode('<br />', $element->getMessages()));
         }
 
         $content .= $helperFormControlHelpBlock($element) . PHP_EOL;
