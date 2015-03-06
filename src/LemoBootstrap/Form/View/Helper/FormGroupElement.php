@@ -67,7 +67,7 @@ class FormGroupElement extends AbstractHelper
             $classCheckbox = ' checkbox';
         }
 
-        $markup .= '<div class="col-lg-' . $sizeElement . $classCheckbox . '">' . $helperControls($element) . '</div>';
+        $markup .= '<div class="col-md-' . $sizeElement . $classCheckbox . '">' . $helperControls($element) . '</div>';
 
         return $this->openTag($element) . $markup . $this->closeTag();
     }

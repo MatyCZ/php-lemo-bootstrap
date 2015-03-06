@@ -63,10 +63,10 @@ class FormGroupElements extends AbstractHelper
             $sizeElement = $size;
         }
 
-        $markup .= '<div class="col-lg-' . $sizeElement . '">';
+        $markup .= '<div class="col-md-' . $sizeElement . '">';
         $markup .= '    <div class="row">';
         foreach ($element->getElements() as $el) {
-            $markup .= '    <div class="col-lg-' . round(12 / count($element->getElements())) . '">';
+            $markup .= '    <div class="col-md-' . round(12 / count($element->getElements())) . '">';
             $markup .= '        ' . $helperControls($el) . PHP_EOL;
             $markup .= '    </div>';
         }

@@ -3,6 +3,7 @@
 namespace LemoBootstrap\Form\View\Helper;
 
 use LemoBootstrap\Form\View\Helper\FormControlAddon;
+use LemoBootstrap\Form\View\Helper\FormControlButton;
 use LemoBootstrap\Form\View\Helper\FormControlHelpBlock;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\AbstractHelper;
@@ -30,6 +31,11 @@ class FormControl extends AbstractHelper
      * @var FormControlAddon
      */
     protected $helperFormControlAddon;
+
+    /**
+     * @var FormControlButton
+     */
+    protected $helperFormControlButton;
 
     /**
      * @var FormControlHelpBlock
@@ -62,6 +68,7 @@ class FormControl extends AbstractHelper
     {
         $helperFormElement = $this->getHelperFormElement();
         $helperFormControlAddon = $this->getHelperFormControlAddon();
+        $helperFormControlButton = $this->getHelperFormControlButton();
         $helperFormControlHelpBlock  = $this->getHelperFormControlHelpBlock();
 
         $id = $this->getId($element);
@@ -93,7 +100,7 @@ class FormControl extends AbstractHelper
 
         $element->setAttribute('id', $id);
 
-        if (null !== $element->getOption('addon') || null !== $element->getOption('append') || null !== $element->getOption('prepend')) {
+        if (null !== $element->getOption('addon') || null !== $element->getOption('button') || null !== $element->getOption('append') || null !== $element->getOption('prepend')) {
             $content .= '<div class="input-group">' . PHP_EOL;
         }
 
@@ -110,12 +117,17 @@ class FormControl extends AbstractHelper
             $content .= $helperFormControlAddon($element->setOption('addon', $element->getOption('append'))) . PHP_EOL;
         }
 
+        // Button
+        if (null !== $element->getOption('button')) {
+            $content .= $helperFormControlButton($element, $element->getOption('button')) . PHP_EOL;
+        }
+
         if (in_array($type, $this->elementsValueOptions)) {
             $content = str_replace('/label><label', '/label></div><div class="' . $classCheckboxOrRadio . '"><label', $content);
             $content .= '</div>' . PHP_EOL;
         }
 
-        if (null !== $element->getOption('append') || null !== $element->getOption('prepend')) {
+        if (null !== $element->getOption('button') || null !== $element->getOption('append') || null !== $element->getOption('prepend')) {
             $content .= '</div>' . PHP_EOL;
         }
 
@@ -149,6 +161,26 @@ class FormControl extends AbstractHelper
     }
 
     /**
+     * Retrieve the FormControlButton helper
+     *
+     * @return FormControlButton
+     */
+    protected function getHelperFormControlButton()
+    {
+        if ($this->helperFormControlButton) {
+            return $this->helperFormControlButton;
+        }
+
+        if (!$this->helperFormControlButton instanceof FormControlButton) {
+            $this->helperFormControlButton = new FormControlButton();
+        }
+
+        $this->helperFormControlButton->setView($this->getView());
+
+        return $this->helperFormControlButton;
+    }
+
+    /**
      * Retrieve the FormControlHelpBlock helper
      *
      * @return FormControlHelpBlock
@@ -162,6 +194,8 @@ class FormControl extends AbstractHelper
         if (!$this->helperFormControlHelpBlock instanceof FormControlHelpBlock) {
             $this->helperFormControlHelpBlock = new FormControlHelpBlock();
         }
+
+        $this->helperFormControlHelpBlock->setView($this->getView());
 
         return $this->helperFormControlHelpBlock;
     }

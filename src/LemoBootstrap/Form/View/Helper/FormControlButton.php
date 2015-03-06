@@ -5,20 +5,20 @@ namespace LemoBootstrap\Form\View\Helper;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\AbstractHelper;
 
-class FormControlAddon extends AbstractHelper
+class FormControlButton extends AbstractHelper
 {
     /**
-     * Template for addon
+     * Template for button
      *
      * @var string
-     */
-    protected $template = '<span class="input-group-addon">%s</span>';
+*/
+    protected $template = '<span class="input-group-btn">%s</span>';
 
     /**
      * Magical Invoke Method
      *
      * @param  ElementInterface $element
-     * @return string|FormControlAddon
+     * @return string|FormControlButton
      */
     public function __invoke(ElementInterface $element = null)
     {
@@ -30,7 +30,7 @@ class FormControlAddon extends AbstractHelper
     }
 
     /**
-     * Render addon
+     * Render button
      *
      * @param  ElementInterface $element
      * @return string
@@ -39,26 +39,20 @@ class FormControlAddon extends AbstractHelper
     {
         $string = '';
 
-        if (null !== $element->getOption('addon')) {
-            $addon = $element->getOption('addon');
+        if (null !== $element->getOption('button')) {
+            $button = $element->getOption('button');
 
-            if (null !== ($translator = $this->getTranslator())) {
-                $addon = $translator->translate(
-                    $addon, $this->getTranslatorTextDomain()
-                );
-            }
-
-            $string .= sprintf($this->getTemplate(), $addon);
+            $string .= sprintf($this->getTemplate(), $button);
         }
 
         return $string;
     }
 
     /**
-     * Set template for addon
+     * Set template
      *
      * @param  string $template
-     * @return FormControlAddon
+     * @return FormControlButton
      */
     public function setTemplate($template)
     {
@@ -67,7 +61,7 @@ class FormControlAddon extends AbstractHelper
     }
 
     /**
-     * Get template for addon
+     * Get template
      *
      * @return string
      */
