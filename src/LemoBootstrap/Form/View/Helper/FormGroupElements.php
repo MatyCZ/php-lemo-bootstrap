@@ -130,8 +130,8 @@ class FormGroupElements extends AbstractHelper
             $this->helperControlLabel = new FormControlLabel();
         }
 
-        $this->helperControlLabel->setView($this->getView());
         $this->helperControlLabel->setTranslator($this->getTranslator());
+        $this->helperControlLabel->setView($this->getView());
 
         return $this->helperControlLabel;
     }
@@ -151,8 +151,8 @@ class FormGroupElements extends AbstractHelper
             $this->helperControls = new FormControls();
         }
 
-        $this->helperControls->setView($this->getView());
         $this->helperControls->setTranslator($this->getTranslator());
+        $this->helperControls->setView($this->getView());
 
         return $this->helperControls;
     }

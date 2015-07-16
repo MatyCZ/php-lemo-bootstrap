@@ -103,6 +103,7 @@ class FormControls extends AbstractHelper
             $this->helperFormControl = new FormControl();
         }
 
+        $this->helperFormControl->setTranslator($this->getTranslator());
         $this->helperFormControl->setView($this->getView());
 
         return $this->helperFormControl;

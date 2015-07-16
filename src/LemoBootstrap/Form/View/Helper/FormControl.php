@@ -155,6 +155,7 @@ class FormControl extends AbstractHelper
             $this->helperFormControlAddon = new FormControlAddon();
         }
 
+        $this->helperFormControlAddon->setTranslator($this->getTranslator());
         $this->helperFormControlAddon->setView($this->getView());
 
         return $this->helperFormControlAddon;
@@ -175,6 +176,7 @@ class FormControl extends AbstractHelper
             $this->helperFormControlButton = new FormControlButton();
         }
 
+        $this->helperFormControlButton->setTranslator($this->getTranslator());
         $this->helperFormControlButton->setView($this->getView());
 
         return $this->helperFormControlButton;
@@ -195,6 +197,7 @@ class FormControl extends AbstractHelper
             $this->helperFormControlHelpBlock = new FormControlHelpBlock();
         }
 
+        $this->helperFormControlHelpBlock->setTranslator($this->getTranslator());
         $this->helperFormControlHelpBlock->setView($this->getView());
 
         return $this->helperFormControlHelpBlock;

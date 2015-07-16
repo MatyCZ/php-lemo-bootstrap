@@ -171,8 +171,8 @@ class FormTemplateCollection extends AbstractHelper
             $this->helperFormControl = new FormControl();
         }
 
-        $this->helperFormControl->setView($this->getView());
         $this->helperFormControl->setTranslator($this->getTranslator());
+        $this->helperFormControl->setView($this->getView());
 
         return $this->helperFormControl;
     }

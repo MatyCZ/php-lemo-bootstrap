@@ -86,8 +86,8 @@ class FormGroupsFieldset extends AbstractHelper
             $this->helperFormGroupElement = new FormGroupElement();
         }
 
-        $this->helperFormGroupElement->setView($this->getView());
         $this->helperFormGroupElement->setTranslator($this->getTranslator());
+        $this->helperFormGroupElement->setView($this->getView());
 
         return $this->helperFormGroupElement;
     }
@@ -107,8 +107,8 @@ class FormGroupsFieldset extends AbstractHelper
             $this->helperFormGroupsCollection = new FormGroupsCollection();
         }
 
-        $this->helperFormGroupsCollection->setView($this->getView());
         $this->helperFormGroupsCollection->setTranslator($this->getTranslator());
+        $this->helperFormGroupsCollection->setView($this->getView());
 
         return $this->helperFormGroupsCollection;
     }
