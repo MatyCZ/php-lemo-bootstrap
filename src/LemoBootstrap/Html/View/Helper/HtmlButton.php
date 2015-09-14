@@ -8,6 +8,11 @@ use LemoBootstrap\Html\ElementInterface;
 class HtmlButton extends AbstractHelper
 {
     /**
+     * @var HtmlFontAwesome
+     */
+    protected $helperHtmlFontAwesome;
+
+    /**
      * @var HtmlGlyphicon
      */
     protected $helperHtmlGlyphicon;
@@ -72,6 +77,7 @@ class HtmlButton extends AbstractHelper
     public function render(ElementInterface $element, $buttonContent = null)
     {
         $helperEscape = $this->getEscapeHtmlHelper();
+        $helperHtmlFontAwesome = $this->getHelperHtmlFontAwesome();
         $helperHtmlGlyphicon = $this->getHelperHtmlGlyphicon();
 
         $openTag = $this->openTag($element);
@@ -94,6 +100,9 @@ class HtmlButton extends AbstractHelper
         }
 
         $content = '';
+        if (null !== $element->getFontAwesome()) {
+            $content .= $helperHtmlFontAwesome($element->getFontAwesome()) . ' ';
+        }
         if (null !== $element->getGlyphicon()) {
             $content .= $helperHtmlGlyphicon($element->getGlyphicon()) . ' ';
         }
@@ -172,6 +181,28 @@ class HtmlButton extends AbstractHelper
     }
 
     /**
+     * Retrieve the HtmlFontAwesome helper
+     *
+     * @return HtmlFontAwesome
+     */
+    protected function getHelperHtmlFontAwesome()
+    {
+        if ($this->helperHtmlFontAwesome) {
+            return $this->helperHtmlFontAwesome;
+        }
+
+        if (method_exists($this->view, 'plugin')) {
+            $this->helperHtmlFontAwesome = $this->view->plugin('htmlfontawesome');
+        }
+
+        if (!$this->helperHtmlFontAwesome instanceof HtmlFontAwesome) {
+            $this->helperHtmlFontAwesome = new HtmlFontAwesome();
+        }
+
+        return $this->helperHtmlFontAwesome;
+    }
+
+    /**
      * Retrieve the HtmlGlyphicon helper
      *
      * @return HtmlGlyphicon
@@ -183,7 +214,7 @@ class HtmlButton extends AbstractHelper
         }
 
         if (method_exists($this->view, 'plugin')) {
-            $this->helperHtmlGlyphicon = $this->view->plugin('htmlbutton');
+            $this->helperHtmlGlyphicon = $this->view->plugin('htmlglyphicon');
         }
 
         if (!$this->helperHtmlGlyphicon instanceof HtmlGlyphicon) {

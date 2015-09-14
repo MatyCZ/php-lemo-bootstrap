@@ -16,8 +16,15 @@ class Button extends Element
      */
     protected $attributes = array(
         'class' => 'btn',
-        'type' => 'button',
+        'type'  => 'button',
     );
+
+    /**
+     * FontAwesome element
+     *
+     * @var FontAwesome
+     */
+    protected $fontAwesome;
 
     /**
      * Glyphicon element
@@ -25,6 +32,40 @@ class Button extends Element
      * @var Glyphicon
      */
     protected $glyphicon;
+
+    /**
+     * Set FontAwesome name
+     *
+     * @param  array|FontAwesome $fontAwesome
+     * @return FontAwesome
+     * @throws Exception\InvalidArgumentException
+     */
+    public function setFontAwesome($fontAwesome)
+    {
+        if (!$fontAwesome instanceof FontAwesome) {
+            if (is_object($fontAwesome) && !$fontAwesome instanceof Traversable) {
+                throw new Exception\InvalidArgumentException(sprintf(
+                    'Expected instance of LemoBootstrap\Html\Element\FontAwesome; received "%s"',
+                    get_class($fontAwesome))
+                );
+            }
+
+            $fontAwesome = new FontAwesome($fontAwesome);
+        }
+
+        $this->fontAwesome = $fontAwesome;
+        return $this;
+    }
+
+    /**
+     * Retreive fontAwesome element
+     *
+     * @return FontAwesome
+     */
+    public function getFontAwesome()
+    {
+        return $this->fontAwesome;
+    }
 
     /**
      * Set glyphicon name
@@ -70,6 +111,10 @@ class Button extends Element
     public function setOptions($options)
     {
         parent::setOptions($options);
+
+        if (isset($this->options['fontawesome'])) {
+            $this->setFontAwesome($this->options['fontawesome']);
+        }
 
         if (isset($this->options['glyphicon'])) {
             $this->setGlyphicon($this->options['glyphicon']);
