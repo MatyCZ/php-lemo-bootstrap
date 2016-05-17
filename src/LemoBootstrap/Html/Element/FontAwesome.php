@@ -15,7 +15,7 @@ class FontAwesome extends Element
      * @var array
      */
     protected $attributes = array(
-        'class' => true,
+        'class' => '',
     );
 
     /**

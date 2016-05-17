@@ -2,12 +2,8 @@
 
 namespace LemoBootstrap\Form\View\Helper;
 
-use LemoBootstrap\Form\View\Helper\FormControlLabel;
-use LemoBootstrap\Form\View\Helper\FormControls;
 use Zend\Form\Element\Hidden;
 use Zend\Form\ElementInterface;
-use Zend\Form\Fieldset;
-use Zend\Form\View\Helper\AbstractHelper;
 
 class FormGroupElements extends AbstractHelper
 {
@@ -35,35 +31,24 @@ class FormGroupElements extends AbstractHelper
      * Display a Form
      *
      * @param  ElementInterface $element
-     * @param  null|int         $size
      * @return string
      */
-    public function __invoke(ElementInterface $element, $size = 12)
+    public function __invoke(ElementInterface $element)
     {
-        return $this->render($element, $size);
+        return $this->render($element);
     }
 
-    public function render(ElementInterface $element, $size = 12)
+    public function render(ElementInterface $element)
     {
         $helperControlLabel = $this->getHelperControlLabel();
         $helperControls = $this->getHelperControls();
 
-        if ($size == 12) {
-            $sizeLabel = 2;
-            $sizeElement = 10;
-        } else {
-            $sizeLabel = 4;
-            $sizeElement = 8;
-        }
-
         $markup = '';
         if ('' != $element->getLabel()) {
-            $markup .= $helperControlLabel($element, $sizeLabel);
-        } else {
-            $sizeElement = $size;
+            $markup .= $helperControlLabel($element);
         }
 
-        $markup .= '<div class="col-md-' . $sizeElement . '">';
+        $markup .= '<div class="col-md-' . $this->getSizeForElement() . '">';
         $markup .= '    <div class="row">';
         foreach ($element->getElements() as $el) {
             $markup .= '    <div class="col-md-' . round(12 / count($element->getElements())) . '">';

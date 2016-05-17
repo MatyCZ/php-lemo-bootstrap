@@ -2,11 +2,7 @@
 
 namespace LemoBootstrap\Form\View\Helper;
 
-use LemoBootstrap\Form\View\Helper\FormControlAddon;
-use LemoBootstrap\Form\View\Helper\FormControlButton;
-use LemoBootstrap\Form\View\Helper\FormControlHelpBlock;
 use Zend\Form\ElementInterface;
-use Zend\Form\View\Helper\AbstractHelper;
 use Zend\Form\View\Helper\FormElement;
 
 class FormControl extends AbstractHelper
@@ -132,7 +128,15 @@ class FormControl extends AbstractHelper
         }
 
         if (count($element->getMessages()) > 0) {
-            $element->setOption('help-block', implode('<br />', $element->getMessages()));
+            $messages = [];
+            foreach ($element->getMessages() as $message) {
+                if (is_array($message)) {
+                    $messages[] = current($message);
+                } else {
+                    $messages[] = $message;
+                }
+            }
+            $element->setOption('help-block', implode('<br />', $messages));
         }
 
         $content .= $helperFormControlHelpBlock($element) . PHP_EOL;

@@ -16,8 +16,12 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
-        "zendframework/zendframework": "2.*"
+        "php": "^5.5 || ^7.0",
+        "zendframework/zend-form": "^2.8",
+        "zendframework/zend-i18n": "^2.7",
+        "zendframework/zend-mvc": "^2.7",
+        "zendframework/zend-stdlib": "^2.7 || ^3.0",
+        "zendframework/zend-view": "^2.7"
     },
     "autoload": {
         "psr-0": {

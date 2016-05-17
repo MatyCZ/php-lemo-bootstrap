@@ -2,11 +2,8 @@
 
 namespace LemoBootstrap\Form\View\Helper;
 
-use LemoBootstrap\Form\View\Helper\FormControl;
-use Zend\Form\ElementInterface;
 use Zend\Form\Element\Collection;
 use Zend\Form\FieldsetInterface;
-use Zend\Form\View\Helper\AbstractHelper;
 
 class FormTemplateCollection extends AbstractHelper
 {
@@ -31,26 +28,24 @@ class FormTemplateCollection extends AbstractHelper
      * Proxies to {@link render()}.
      *
      * @param  null|Collection $collection
-     * @param  null|int        $size
      * @return string|FormGroupsCollection
      */
-    public function __invoke(Collection $collection = null, $size = 12)
+    public function __invoke(Collection $collection = null)
     {
         if (null === $collection) {
             return $this;
         }
 
-        return $this->render($collection, $size);
+        return $this->render($collection);
     }
 
     /**
      * Render a collection by iterating through all fieldsets and elements
      *
      * @param  Collection $collection
-     * @param  int        $size
      * @return string
      */
-    public function render(Collection $collection, $size = 12)
+    public function render(Collection $collection)
     {
         $renderer = $this->getView();
         if (!method_exists($renderer, 'plugin')) {
@@ -67,7 +62,7 @@ class FormTemplateCollection extends AbstractHelper
 
                 foreach ($this->getTemplatePlaceholders() as $placeholder => $elementName) {
                     if ($elementOrFieldset->has($elementName)) {
-                        $template = str_replace($placeholder, $helperFormControl($elementOrFieldset->get($elementName), $size), $template);
+                        $template = str_replace($placeholder, $helperFormControl($elementOrFieldset->get($elementName)), $template);
                     }
                 }
 
@@ -77,7 +72,7 @@ class FormTemplateCollection extends AbstractHelper
 
         // Render template
         if ($collection->shouldCreateTemplate()) {
-            $markup .= $this->renderTemplate($collection, 12);
+            $markup .= $this->renderTemplate($collection);
         }
 
         return $markup;
@@ -87,10 +82,9 @@ class FormTemplateCollection extends AbstractHelper
      * Only render a template
      *
      * @param  Collection $collection
-     * @param  int        $size
      * @return string
      */
-    public function renderTemplate(Collection $collection, $size)
+    public function renderTemplate(Collection $collection)
     {
         $helperFormControl  = $this->getHelperFormControl();
         $templateElement = $collection->getTemplateElement();
@@ -98,7 +92,7 @@ class FormTemplateCollection extends AbstractHelper
         $template = $this->getTemplate();
         foreach ($this->getTemplatePlaceholders() as $placeholder => $elementName) {
             if ($templateElement->has($elementName)) {
-                $template = str_replace($placeholder, $helperFormControl($templateElement->get($elementName), $size), $template);
+                $template = str_replace($placeholder, $helperFormControl($templateElement->get($elementName)), $template);
             }
         }
 

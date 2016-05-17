@@ -5,7 +5,6 @@ namespace LemoBootstrap\Form\View\Helper;
 use LemoBootstrap\Exception;
 use Zend\Form\ElementInterface;
 use Zend\Form\Form as ZendForm;
-use Zend\Form\View\Helper\AbstractHelper;
 use Zend\InputFilter\InputFilterInterface;
 
 class FormControlLabel extends AbstractHelper
@@ -30,13 +29,12 @@ class FormControlLabel extends AbstractHelper
      * will be provided in the $labelContent.
      *
      * @param  ElementInterface $element
-     * @param  int              $size
      * @param  null|string      $labelContent
      * @param  string           $position
      * @throws Exception\DomainException
      * @return string|FormControlLabel
      */
-    public function __invoke(ElementInterface $element = null, $size = 4, $labelContent = null, $position = null)
+    public function __invoke(ElementInterface $element = null, $labelContent = null, $position = null)
     {
         if (!$element) {
             return $this;
@@ -92,19 +90,18 @@ class FormControlLabel extends AbstractHelper
             }
         }
 
-        return $this->openTag($element, $size) . $labelContent . $this->closeTag();
+        return $this->openTag($element) . $labelContent . $this->closeTag();
     }
 
     /**
      * Generate an opening label tag
      *
      * @param  null|array|ElementInterface $attributesOrElement
-     * @param  null|int                    $size
      * @throws Exception\InvalidArgumentException
      * @throws Exception\DomainException
      * @return string
      */
-    public function openTag($attributesOrElement = null, $size = 4)
+    public function openTag($attributesOrElement = null)
     {
         if (!is_array($attributesOrElement) && !$attributesOrElement instanceof ElementInterface) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -136,10 +133,10 @@ class FormControlLabel extends AbstractHelper
                     $attributes['class'] = trim($attributes['class'] . ' ' . 'control-label');
                 }
             } else {
-                $attributes['class'] = 'control-label col-md-' . $size;
+                $attributes['class'] = 'control-label col-md-' . $this->getSizeForLabel();
             }
         } else {
-            $attributes['class'] = 'control-label col-md-' . $size;
+            $attributes['class'] = 'control-label col-md-' . $this->getSizeForLabel();
         }
 
         $attributes = $this->createAttributesString($attributes);

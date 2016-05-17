@@ -18,8 +18,10 @@ return array(
             'formControls'           => 'LemoBootstrap\Form\View\Helper\FormControls',
             'formGroupElement'       => 'LemoBootstrap\Form\View\Helper\FormGroupElement',
             'formGroupElements'      => 'LemoBootstrap\Form\View\Helper\FormGroupElements',
+            'formGroups'             => 'LemoBootstrap\Form\View\Helper\FormGroups',
             'formGroupsCollection'   => 'LemoBootstrap\Form\View\Helper\FormGroupsCollection',
             'formGroupsFieldset'     => 'LemoBootstrap\Form\View\Helper\FormGroupsFieldset',
+            'formRenderOptions'      => 'LemoBootstrap\Form\View\Helper\FormRenderOptions',
             'formTemplateCollection' => 'LemoBootstrap\Form\View\Helper\FormTemplateCollection',
         )
     )

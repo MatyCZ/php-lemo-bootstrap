@@ -2,12 +2,9 @@
 
 namespace LemoBootstrap\Form\View\Helper;
 
-use LemoBootstrap\Form\View\Helper\FormControlLabel;
-use LemoBootstrap\Form\View\Helper\FormControls;
 use Zend\Form\Element\Checkbox;
 use Zend\Form\Element\Hidden;
 use Zend\Form\ElementInterface;
-use Zend\Form\View\Helper\AbstractHelper;
 
 class FormGroupElement extends AbstractHelper
 {
@@ -35,30 +32,21 @@ class FormGroupElement extends AbstractHelper
      * Display a Form
      *
      * @param  ElementInterface $element
-     * @param  null|int      $size
      * @return string
      */
-    public function __invoke(ElementInterface $element, $size = 12)
+    public function __invoke(ElementInterface $element)
     {
-        return $this->render($element, $size);
+        return $this->render($element);
     }
 
-    public function render(ElementInterface $element, $size = 12)
+    public function render(ElementInterface $element)
     {
         $helperLabel = $this->getHelperControlLabel();
         $helperControls = $this->getHelperControls();
 
-        if ($size == 12) {
-            $sizeLabel = 2;
-            $sizeElement = 10;
-        } else {
-            $sizeLabel = 4;
-            $sizeElement = 8;
-        }
-
         $markup = '';
         if ('' != $element->getLabel()) {
-            $markup .= $helperLabel($element, $sizeLabel);
+            $markup .= $helperLabel($element);
         }
 
         // Add class to value options for multicheckbox and radio elements
@@ -67,7 +55,7 @@ class FormGroupElement extends AbstractHelper
             $classCheckbox = ' checkbox';
         }
 
-        $markup .= '<div class="col-md-' . $sizeElement . $classCheckbox . '">' . $helperControls($element) . '</div>';
+        $markup .= '<div class="col-md-' . $this->getSizeForElement() . $classCheckbox . '">' . $helperControls($element) . '</div>';
 
         return $this->openTag($element) . $markup . $this->closeTag();
     }

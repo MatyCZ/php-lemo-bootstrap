@@ -2,13 +2,9 @@
 
 namespace LemoBootstrap\Form\View\Helper;
 
-use LemoBootstrap\Form\View\Helper\FormGroupElement;
-use LemoBootstrap\Form\View\Helper\FormGroupElements;
-use LemoBootstrap\Form\View\Helper\FormGroupsFieldset;
 use Zend\Form\ElementInterface;
 use Zend\Form\Element\Collection;
 use Zend\Form\FieldsetInterface;
-use Zend\Form\View\Helper\AbstractHelper;
 
 class FormGroupsCollection extends AbstractHelper
 {
@@ -33,17 +29,16 @@ class FormGroupsCollection extends AbstractHelper
      * Proxies to {@link render()}.
      *
      * @param  Collection|null $collection
-     * @param  null|int        $size
      * @param  bool            $inline
      * @return string|FormGroupsCollection
      */
-    public function __invoke(Collection $collection = null, $size = 12, $inline = false)
+    public function __invoke(Collection $collection = null, $inline = false)
     {
         if (!$collection) {
             return $this;
         }
 
-        return $this->render($collection, $size, $inline);
+        return $this->render($collection, $inline);
     }
 
     /**
@@ -54,7 +49,7 @@ class FormGroupsCollection extends AbstractHelper
      * @param  bool       $inline
      * @return string
      */
-    public function render(Collection $collection, $size = 12, $inline = false)
+    public function render(Collection $collection, $inline = false)
     {
         $renderer = $this->getView();
         if (!method_exists($renderer, 'plugin')) {
@@ -71,18 +66,18 @@ class FormGroupsCollection extends AbstractHelper
         foreach ($collection->getIterator() as $elementOrFieldset) {
             if ($elementOrFieldset instanceof FieldsetInterface) {
                 if (true === $inline) {
-                    $markup .= $helperFormGroupElements($elementOrFieldset, $size);
+                    $markup .= $helperFormGroupElements($elementOrFieldset);
                 } else {
-                    $markup .= $helperFormGroupFieldset($elementOrFieldset, $size);
+                    $markup .= $helperFormGroupFieldset($elementOrFieldset);
                 }
             } elseif ($elementOrFieldset instanceof ElementInterface) {
-                $markup .= $helperFormGroupElement($elementOrFieldset, $size);
+                $markup .= $helperFormGroupElement($elementOrFieldset);
             }
         }
 
         // Render template
         if ($collection->shouldCreateTemplate()) {
-            $markup .= $this->renderTemplate($collection, $size);
+            $markup .= $this->renderTemplate($collection);
         }
 
         return $markup;
@@ -92,11 +87,10 @@ class FormGroupsCollection extends AbstractHelper
      * Only render a template
      *
      * @param  Collection $collection
-     * @param  null|int   $size
      * @param  bool       $inline
      * @return string
      */
-    public function renderTemplate(Collection $collection, $size = 12, $inline = false)
+    public function renderTemplate(Collection $collection, $inline = false)
     {
         $helperFormGroupElement = $this->getHelperFormGroupElement();
         $helperFormGroupElements = $this->getHelperFormGroupElements();
@@ -107,12 +101,12 @@ class FormGroupsCollection extends AbstractHelper
         $markup = '';
         if ($templateElement instanceof FieldsetInterface) {
             if (true === $inline) {
-                $markup .= $helperFormGroupElements($templateElement, $size);
+                $markup .= $helperFormGroupElements($templateElement);
             } else {
-                $markup .= $helperFormGroupsFieldset($templateElement, $size);
+                $markup .= $helperFormGroupsFieldset($templateElement);
             }
         } elseif ($templateElement instanceof ElementInterface) {
-            $markup .= $helperFormGroupElement($templateElement, $size);
+            $markup .= $helperFormGroupElement($templateElement);
         }
 
         $id = $this->getId($collection);

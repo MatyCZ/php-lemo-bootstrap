@@ -3,7 +3,6 @@
 namespace LemoBootstrap\Form\View\Helper;
 
 use Zend\Form\ElementInterface;
-use Zend\Form\View\Helper\AbstractHelper;
 
 class FormControlHelpBlock extends AbstractHelper
 {

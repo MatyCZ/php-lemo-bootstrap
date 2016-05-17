@@ -2,11 +2,13 @@
 
 namespace LemoBootstrap\Form\View\Helper;
 
-use Zend\Form\ElementInterface;
+use LemoBootstrap\Exception;
 use Zend\Form\Element\Collection;
+use Zend\Form\ElementInterface;
 use Zend\Form\FieldsetInterface;
+use Zend\Form\FormInterface;
 
-class FormGroupsFieldset extends AbstractHelper
+class FormGroups extends AbstractHelper
 {
     /**
      * @var FormGroupElement
@@ -19,42 +21,45 @@ class FormGroupsFieldset extends AbstractHelper
     protected $helperFormGroupsCollection;
 
     /**
-     * Invoke helper as function
-     * Proxies to {@link render()}.
-     *
-     * @param  FieldsetInterface|null $fieldset
-     * @return string|FormGroupsFieldset
+     * @param  FormInterface|FieldsetInterface $formOrFieldset
+     * @param  array                           $elementNames
+     * @param  int                             $boxSize
+     * @return string
      */
-    public function __invoke(FieldsetInterface $fieldset = null)
+    public function __invoke($formOrFieldset, array $elementNames, $boxSize = null)
     {
-        if (!$fieldset) {
-            return $this;
-        }
-
-        return $this->render($fieldset);
+        return $this->render($formOrFieldset, $elementNames, $boxSize);
     }
 
     /**
-     * Render a collection by iterating through all fieldsets and elements
-     *
-     * @param  FieldsetInterface $fieldset
-     * @param  null|int         $size
+     * @param  FormInterface|FieldsetInterface $formOrFieldset
+     * @param  array                           $elementNames
+     * @param  int                             $boxSize
      * @return string
      */
-    public function render(FieldsetInterface $fieldset)
+    public function render($formOrFieldset, array $elementNames, $boxSize = null)
     {
-        $renderer = $this->getView();
-        if (!method_exists($renderer, 'plugin')) {
-            // Bail early if renderer is not pluggable
-            return '';
+        if (!$formOrFieldset instanceof FormInterface || !$formOrFieldset instanceof FieldsetInterface) {
+            throw new Exception\InvalidArgumentException(sprintf("Argument must be instance of FormInterface or FieldsetInterface"));
         }
 
-        $helperFormGroupElement  = $this->getHelperFormGroupElement();
-        $helperFormGroupsCollection  = $this->getHelperFormGroupsCollection();
-        $helperFormGroupFieldset = $this;
+        // Set size of box
+        if (null !== $boxSize) {
+            $this->setSizeOfBox($boxSize);
+        }
+
+        $helperFormGroupElement     = $this->getHelperFormGroupElement();
+        $helperFormGroupsCollection = $this->getHelperFormGroupsCollection();
+        $helperFormGroupFieldset    = $this;
 
         $markup = '';
-        foreach ($fieldset->getIterator() as $elementOrFieldset) {
+        foreach ($elementNames as $elementName) {
+            if (!$formOrFieldset->has($elementName)) {
+                continue;
+            }
+
+            $elementOrFieldset = $formOrFieldset->get($elementName);
+
             if ($elementOrFieldset instanceof Collection) {
                 $markup .= $helperFormGroupsCollection($elementOrFieldset);
             } elseif ($elementOrFieldset instanceof FieldsetInterface) {
