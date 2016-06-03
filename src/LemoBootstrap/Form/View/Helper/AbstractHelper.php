@@ -9,11 +9,11 @@ abstract class AbstractHelper extends ZendAbstractHelper
     /**
      * @var int
      */
-    protected static $sizeForElement = 10;
+    protected static $sizeForElement = 6;
     /**
      * @var int
      */
-    protected static $sizeForLabel = 2;
+    protected static $sizeForLabel = 6;
 
     /**
      * @var int
@@ -86,16 +86,16 @@ abstract class AbstractHelper extends ZendAbstractHelper
     {
         $sizeBox = $this->getSizeOfBox();
 
-        if ($sizeBox > 10) {
-            $sizeLabel = 2;
-            $sizeElement = 10;
-        } elseif ($sizeBox > 8) {
-            $sizeLabel = 4;
-            $sizeElement = 8;
-        } else {
+//        if ($sizeBox > 10) {
+//            $sizeLabel = 2;
+//            $sizeElement = 10;
+//        } elseif ($sizeBox > 8) {
+//            $sizeLabel = 4;
+//            $sizeElement = 8;
+//        } else {
             $sizeLabel = 6;
             $sizeElement = 6;
-        }
+//        }
 
         $this->setSizeForElement($sizeElement);
         $this->setSizeForLabel($sizeLabel);

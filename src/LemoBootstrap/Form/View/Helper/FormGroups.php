@@ -39,7 +39,7 @@ class FormGroups extends AbstractHelper
      */
     public function render($formOrFieldset, array $elementNames, $boxSize = null)
     {
-        if (!$formOrFieldset instanceof FormInterface || !$formOrFieldset instanceof FieldsetInterface) {
+        if (!$formOrFieldset instanceof FormInterface && !$formOrFieldset instanceof FieldsetInterface) {
             throw new Exception\InvalidArgumentException(sprintf("Argument must be instance of FormInterface or FieldsetInterface"));
         }
 
