@@ -88,9 +88,10 @@ class FormGroupsCollection extends AbstractHelper
      *
      * @param  Collection $collection
      * @param  bool       $inline
+     * @param  bool       $returnOnlyTemplateContent
      * @return string
      */
-    public function renderTemplate(Collection $collection, $inline = false)
+    public function renderTemplate(Collection $collection, $inline = false, $returnOnlyTemplateContent = false)
     {
         $helperFormGroupElement = $this->getHelperFormGroupElement();
         $helperFormGroupElements = $this->getHelperFormGroupElements();
@@ -107,6 +108,10 @@ class FormGroupsCollection extends AbstractHelper
             }
         } elseif ($templateElement instanceof ElementInterface) {
             $markup .= $helperFormGroupElement($templateElement);
+        }
+
+        if (true === $returnOnlyTemplateContent) {
+            return $markup;
         }
 
         $id = $this->getId($collection);

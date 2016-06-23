@@ -128,7 +128,7 @@ class FormControlLabel extends AbstractHelper
         }
 
         if (array_key_exists('class', $attributes)) {
-            if(array_key_exists('class', $attributes)) {
+            if (array_key_exists('class', $attributes)) {
                 if(false === strpos($attributes['class'], 'control-label')) {
                     $attributes['class'] = trim($attributes['class'] . ' ' . 'control-label');
                 }

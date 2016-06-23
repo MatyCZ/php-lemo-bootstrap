@@ -97,7 +97,7 @@ class FormControl extends AbstractHelper
         $element->setAttribute('id', $id);
 
         if (null !== $element->getOption('addon') || null !== $element->getOption('button') || null !== $element->getOption('append') || null !== $element->getOption('prepend')) {
-            $content .= '<div class="input-group">' . PHP_EOL;
+            $content .= '<div class="input-group input-group-sm">' . PHP_EOL;
         }
 
         // Addon - Pre

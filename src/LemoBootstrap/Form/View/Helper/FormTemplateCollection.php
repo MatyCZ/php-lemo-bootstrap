@@ -82,9 +82,10 @@ class FormTemplateCollection extends AbstractHelper
      * Only render a template
      *
      * @param  Collection $collection
+     * @param  bool       $returnOnlyTemplateContent
      * @return string
      */
-    public function renderTemplate(Collection $collection)
+    public function renderTemplate(Collection $collection, $returnOnlyTemplateContent = false)
     {
         $helperFormControl  = $this->getHelperFormControl();
         $templateElement = $collection->getTemplateElement();
@@ -94,6 +95,10 @@ class FormTemplateCollection extends AbstractHelper
             if ($templateElement->has($elementName)) {
                 $template = str_replace($placeholder, $helperFormControl($templateElement->get($elementName)), $template);
             }
+        }
+
+        if (true === $returnOnlyTemplateContent) {
+            return $template;
         }
 
         $id = $this->getId($collection);

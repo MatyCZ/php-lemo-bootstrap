@@ -25,7 +25,7 @@ class FormGroupElements extends AbstractHelper
     /**
      * @var string
      */
-    protected $templateOpenTag = '<div class="form-group%s%s" id="form-group-%s">';
+    protected $templateOpenTag = '<div class="form-group form-group-sm%s%s" id="form-group-%s">';
 
     /**
      * Display a Form
