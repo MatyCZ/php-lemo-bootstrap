@@ -4,6 +4,8 @@ namespace LemoBootstrap\Form\View\Helper;
 
 use Zend\Form\Element\Checkbox;
 use Zend\Form\Element\Hidden;
+use Zend\Form\Element\MultiCheckbox;
+use Zend\Form\Element\Radio;
 use Zend\Form\ElementInterface;
 
 class FormGroupElement extends AbstractHelper
@@ -53,6 +55,26 @@ class FormGroupElement extends AbstractHelper
         $classCheckbox = null;
         if ($element instanceof Checkbox) {
             $classCheckbox = ' checkbox';
+        }
+
+        // Add ID to value options
+        if ($element instanceof MultiCheckbox || $element instanceof Radio) {
+            $valueOptions = [];
+            foreach ($element->getValueOptions() as $value => $label) {
+                if (!is_array($label)) {
+                    $valueOptions[$value] = [
+                        'value' => $value,
+                        'label' => $label,
+                        'attributes' => [
+                            'id' => $element->getName() . '-' . $value,
+                        ]
+                    ];
+                } else {
+                    $valueOptions[$value] = $label;
+                }
+            }
+
+            $element->setValueOptions($valueOptions);
         }
 
         $markup .= '<div class="col-md-' . $this->getSizeForElement() . $classCheckbox . '">' . $helperControls($element) . '</div>';
