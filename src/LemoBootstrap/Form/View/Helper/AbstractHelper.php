@@ -7,6 +7,11 @@ use Zend\Form\View\Helper\AbstractHelper as ZendAbstractHelper;
 abstract class AbstractHelper extends ZendAbstractHelper
 {
     /**
+     * @var bool
+     */
+    protected static $renderErrorMessages = true;
+
+    /**
      * @var int
      */
     protected static $sizeForElement = 6;
@@ -21,8 +26,27 @@ abstract class AbstractHelper extends ZendAbstractHelper
     protected static $sizeOfBox = 12;
 
     /**
+     * @param  bool $renderErrorMessages
+     * @return $this
+     */
+    public function setRenderErrorMessages($renderErrorMessages)
+    {
+        self::$renderErrorMessages = (bool) $renderErrorMessages;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function getRenderErrorMessages()
+    {
+        return self::$renderErrorMessages;
+    }
+
+    /**
      * @param  int $sizeBox
-     * @return int
+     * @return $this
      */
     public function setSizeOfBox($sizeBox)
     {

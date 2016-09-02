@@ -127,7 +127,7 @@ class FormControl extends AbstractHelper
             $content .= '</div>' . PHP_EOL;
         }
 
-        if (count($element->getMessages()) > 0) {
+        if (true === self::$renderErrorMessages && count($element->getMessages()) > 0) {
             $messages = [];
             foreach ($element->getMessages() as $message) {
                 if (is_array($message)) {
