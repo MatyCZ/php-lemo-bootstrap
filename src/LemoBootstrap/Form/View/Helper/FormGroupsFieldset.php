@@ -38,7 +38,7 @@ class FormGroupsFieldset extends AbstractHelper
      * Render a collection by iterating through all fieldsets and elements
      *
      * @param  FieldsetInterface $fieldset
-     * @param  null|int         $size
+     * @param  null|int          $size
      * @return string
      */
     public function render(FieldsetInterface $fieldset)
