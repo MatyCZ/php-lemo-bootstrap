@@ -84,7 +84,7 @@ class FormControl extends AbstractHelper
                 \IntlDateFormatter::GREGORIAN
             );
 
-            $element->setValue($formatter->format($element->getValue()));
+            $element->setValue(str_replace(' ', '', $formatter->format($element->getValue())));
         }
 
         // Add class to value options for multicheckbox and radio elements

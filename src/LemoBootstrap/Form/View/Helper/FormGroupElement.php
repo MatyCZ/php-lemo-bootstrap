@@ -99,7 +99,7 @@ class FormGroupElement extends AbstractHelper
         if ($element instanceof Hidden) {
             $classHide = ' hidden';
         }
-        if (count($element->getMessages()) > 0) {
+        if (true === self::$renderErrorMessages && count($element->getMessages()) > 0) {
             $classError = ' has-error';
         }
 
