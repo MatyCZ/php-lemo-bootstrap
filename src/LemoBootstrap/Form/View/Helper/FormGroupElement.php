@@ -57,6 +57,9 @@ class FormGroupElement extends AbstractHelper
             $classCheckbox = ' checkbox';
         }
 
+        $id = $this->getId($element);
+        $id = trim(strtr($id, array('[' => '-', ']' => '')), '-');
+
         // Add ID to value options
         if ($element instanceof MultiCheckbox || $element instanceof Radio) {
             $valueOptions = [];
@@ -66,7 +69,7 @@ class FormGroupElement extends AbstractHelper
                         'value' => $value,
                         'label' => $label,
                         'attributes' => [
-                            'id' => $element->getName() . '-' . $value,
+                            'id' => $id . '-' . $value,
                         ]
                     ];
                 } else {

@@ -128,7 +128,13 @@ class FormControl extends AbstractHelper
         }
 
         if (true === self::$renderErrorMessages && count($element->getMessages()) > 0) {
+            $helpBlock = $element->getOption('help-block');
+
             $messages = [];
+            if (!empty($helpBlock)) {
+                $messages[] = '<span class="text-muted">' . $helpBlock . '</span>';
+            }
+
             foreach ($element->getMessages() as $message) {
                 if (is_array($message)) {
                     $messages[] = current($message);
