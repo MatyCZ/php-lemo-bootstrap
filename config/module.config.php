@@ -11,6 +11,7 @@ return array(
             'htmlButton'             => 'LemoBootstrap\Html\View\Helper\HtmlButton',
             'htmlFontAwesome'        => 'LemoBootstrap\Html\View\Helper\HtmlFontAwesome',
             'htmlGlyphicon'          => 'LemoBootstrap\Html\View\Helper\HtmlGlyphicon',
+            'formCaptchaImage'       => 'LemoBootstrap\Form\View\Helper\Captcha\Image',
             'formControl'            => 'LemoBootstrap\Form\View\Helper\FormControl',
             'formControlAddon'       => 'LemoBootstrap\Form\View\Helper\FormControlAddon',
             'formControlHelpBlock'   => 'LemoBootstrap\Form\View\Helper\FormControlHelpBlock',
