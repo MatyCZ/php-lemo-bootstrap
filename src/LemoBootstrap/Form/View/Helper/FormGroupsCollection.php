@@ -45,7 +45,6 @@ class FormGroupsCollection extends AbstractHelper
      * Render a collection by iterating through all fieldsets and elements
      *
      * @param  Collection $collection
-     * @param  null|int   $size
      * @param  bool       $inline
      * @return string
      */
