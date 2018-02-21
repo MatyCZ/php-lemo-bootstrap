@@ -8,9 +8,6 @@ return [
     ],
     'view_helpers'       => [
         'invokables' => [
-            'htmlButton'                   => \LemoBootstrap\Html\View\Helper\HtmlButton::class,
-            'htmlFontAwesome'              => \LemoBootstrap\Html\View\Helper\HtmlFontAwesome::class,
-            'htmlGlyphicon'                => \LemoBootstrap\Html\View\Helper\HtmlGlyphicon::class,
             'formCaptchaImage'             => \LemoBootstrap\Form\View\Helper\Captcha\Image::class,
             'formControl'                  => \LemoBootstrap\Form\View\Helper\FormControl::class,
             'formControlAddon'             => \LemoBootstrap\Form\View\Helper\FormControlAddon::class,

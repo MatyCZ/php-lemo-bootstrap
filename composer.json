@@ -16,11 +16,11 @@
         }
     ],
     "require": {
-        "php": "^5.5 || ^7.0",
+        "php": "^7.0",
         "zendframework/zend-form": "2.* || 3.*",
         "zendframework/zend-i18n": "2.* || 3.*",
-        "zendframework/zend-mvc": "2.* || 3.*",
-        "zendframework/zend-stdlib": "2.* || 3.*",
+        "zendframework/zend-mvc": "3.*",
+        "zendframework/zend-stdlib": "3.*",
         "zendframework/zend-view": "2.* || 3.*",
         "zendframework/zend-captcha": "2.* || 3.*"
     },
