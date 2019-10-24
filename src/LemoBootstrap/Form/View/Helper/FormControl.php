@@ -2,6 +2,8 @@
 
 namespace LemoBootstrap\Form\View\Helper;
 
+use Zend\Form\Element\Text;
+use Zend\Form\Element\Textarea;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\FormElement;
 
@@ -85,6 +87,20 @@ class FormControl extends AbstractHelper
             );
 
             $element->setValue(str_replace(' ', '', $formatter->format($element->getValue())));
+        }
+
+        // Element value
+        if (
+            ($element instanceof Text || $element instanceof Textarea)
+            && $element->getValue()
+        ) {
+            $element->setValue(
+                html_entity_decode(
+                    $element->getValue(),
+                    ENT_COMPAT,
+                    'UTF-8'
+                )
+            );
         }
 
         // Add class to value options for multicheckbox and radio elements
