@@ -2,8 +2,8 @@
 
 namespace LemoBootstrap\View\Helper;
 
+use Laminas\View\Helper\AbstractHelper;
 use LemoBootstrap\Mvc\Controller\Plugin\FlashMessenger as FlashMessengerPlugin;
-use Zend\View\Helper\AbstractHelper;
 
 class FlashMessanger extends AbstractHelper
 {

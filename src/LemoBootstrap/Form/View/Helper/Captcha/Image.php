@@ -2,15 +2,15 @@
 
 namespace LemoBootstrap\Form\View\Helper\Captcha;
 
+use Laminas\Captcha\Image as CaptchaAdapter;
+use Laminas\Form\Element\Captcha as ElementCaptcha;
+use Laminas\Form\Element\Hidden;
+use Laminas\Form\ElementInterface;
+use Laminas\Form\Exception;
+use Laminas\Form\View\Helper\Captcha\AbstractWord;
+use LemoBootstrap\Form\View\Helper\FormControlHelpBlock;
 use LemoBootstrap\Form\View\Helper\FormControlLabel;
 use LemoBootstrap\Form\View\Helper\FormGroupElement;
-use LemoBootstrap\Form\View\Helper\FormControlHelpBlock;
-use Zend\Captcha\Image as CaptchaAdapter;
-use Zend\Form\Element\Captcha as ElementCaptcha;
-use Zend\Form\Element\Hidden;
-use Zend\Form\ElementInterface;
-use Zend\Form\Exception;
-use Zend\Form\View\Helper\Captcha\AbstractWord;
 
 class Image extends AbstractWord
 {
@@ -60,7 +60,7 @@ class Image extends AbstractWord
         $markup .= '<div class="col-md-6">';
 
         if ($captcha === null || !$captcha instanceof CaptchaAdapter) {
-            throw new Exception\DomainException(sprintf('%s requires that the element has a "captcha" attribute of type Zend\Captcha\Image; none found', __METHOD__));
+            throw new Exception\DomainException(sprintf('%s requires that the element has a "captcha" attribute of type Laminas\Captcha\Image; none found', __METHOD__));
         }
 
         $captcha->generate();

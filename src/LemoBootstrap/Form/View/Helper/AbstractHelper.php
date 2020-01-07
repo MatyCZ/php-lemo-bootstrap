@@ -2,7 +2,7 @@
 
 namespace LemoBootstrap\Form\View\Helper;
 
-use Zend\Form\View\Helper\AbstractHelper as ZendAbstractHelper;
+use Laminas\Form\View\Helper\AbstractHelper as ZendAbstractHelper;
 
 abstract class AbstractHelper extends ZendAbstractHelper
 {

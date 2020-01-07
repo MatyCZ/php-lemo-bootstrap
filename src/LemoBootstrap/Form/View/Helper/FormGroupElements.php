@@ -2,8 +2,8 @@
 
 namespace LemoBootstrap\Form\View\Helper;
 
-use Zend\Form\Element\Hidden;
-use Zend\Form\ElementInterface;
+use Laminas\Form\Element\Hidden;
+use Laminas\Form\ElementInterface;
 
 class FormGroupElements extends AbstractHelper
 {

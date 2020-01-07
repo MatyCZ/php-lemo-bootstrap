@@ -2,9 +2,9 @@
 
 namespace LemoBootstrap\Form\View\Helper;
 
-use Zend\Form\View\Helper\FormInput;
-use Zend\Form\ElementInterface;
-use Zend\Form\Exception;
+use Laminas\Form\ElementInterface;
+use Laminas\Form\Exception;
+use Laminas\Form\View\Helper\FormInput;
 
 class FormButton extends FormInput
 {
@@ -117,7 +117,7 @@ class FormButton extends FormInput
 
         if (!$attributesOrElement instanceof ElementInterface) {
             throw new Exception\InvalidArgumentException(sprintf(
-                '%s expects an array or Zend\Form\ElementInterface instance; received "%s"',
+                '%s expects an array or Laminas\Form\ElementInterface instance; received "%s"',
                 __METHOD__,
                 (is_object($attributesOrElement) ? get_class($attributesOrElement) : gettype($attributesOrElement))
             ));

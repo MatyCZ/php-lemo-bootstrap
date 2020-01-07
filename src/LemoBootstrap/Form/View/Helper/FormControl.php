@@ -2,8 +2,8 @@
 
 namespace LemoBootstrap\Form\View\Helper;
 
-use Zend\Form\ElementInterface;
-use Zend\Form\View\Helper\FormElement;
+use Laminas\Form\ElementInterface;
+use Laminas\Form\View\Helper\FormElement;
 
 class FormControl extends AbstractHelper
 {

@@ -2,9 +2,9 @@
 
 namespace LemoBootstrap\Mvc\Controller\Plugin;
 
+use Laminas\Form\Form;
+use Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger as FlashMessengerPlugin;
 use LemoBootstrap\Exception;
-use Zend\Form\Form;
-use Zend\Mvc\Controller\Plugin\FlashMessenger as FlashMessengerPlugin;
 
 class FlashMessenger extends FlashMessengerPlugin
 {
@@ -90,7 +90,7 @@ class FlashMessenger extends FlashMessengerPlugin
                 if(isset($elements[$element])) {
                     $formError[$message][] = $this->getController()
                         ->getServiceLocator()
-                        ->get('Zend\View\Renderer\PhpRenderer')
+                        ->get('Laminas\View\Renderer\PhpRenderer')
                         ->translate($elements[$element]->getLabel());
                 }
             }

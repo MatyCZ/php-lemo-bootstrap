@@ -2,9 +2,9 @@
 
 namespace LemoBootstrap\Form\View\Helper;
 
-use Zend\Form\ElementInterface;
-use Zend\Form\Element\Collection;
-use Zend\Form\FieldsetInterface;
+use Laminas\Form\Element\Collection;
+use Laminas\Form\ElementInterface;
+use Laminas\Form\FieldsetInterface;
 
 class FormGroupsCollection extends AbstractHelper
 {

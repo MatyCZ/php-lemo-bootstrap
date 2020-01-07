@@ -2,11 +2,11 @@
 
 namespace LemoBootstrap\Form\View\Helper;
 
-use Zend\Form\Element\Checkbox;
-use Zend\Form\Element\Hidden;
-use Zend\Form\Element\MultiCheckbox;
-use Zend\Form\Element\Radio;
-use Zend\Form\ElementInterface;
+use Laminas\Form\Element\Checkbox;
+use Laminas\Form\Element\Hidden;
+use Laminas\Form\Element\MultiCheckbox;
+use Laminas\Form\Element\Radio;
+use Laminas\Form\ElementInterface;
 
 class FormGroupElement extends AbstractHelper
 {

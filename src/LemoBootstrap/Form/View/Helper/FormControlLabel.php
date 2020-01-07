@@ -2,8 +2,8 @@
 
 namespace LemoBootstrap\Form\View\Helper;
 
+use Laminas\Form\ElementInterface;
 use LemoBootstrap\Exception;
-use Zend\Form\ElementInterface;
 
 class FormControlLabel extends AbstractHelper
 {
@@ -92,7 +92,7 @@ class FormControlLabel extends AbstractHelper
     {
         if (!is_array($attributesOrElement) && !$attributesOrElement instanceof ElementInterface) {
             throw new Exception\InvalidArgumentException(sprintf(
-                '%s expects an array or Zend\Form\ElementInterface instance; received "%s"',
+                '%s expects an array or Laminas\Form\ElementInterface instance; received "%s"',
                 __METHOD__,
                 (is_object($attributesOrElement) ? get_class($attributesOrElement) : gettype($attributesOrElement))
             ));
