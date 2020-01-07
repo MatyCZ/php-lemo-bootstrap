@@ -2,10 +2,10 @@
 
 namespace LemoBootstrap\Form\View\Helper;
 
-use Zend\Form\Element\Text;
-use Zend\Form\Element\Textarea;
-use Zend\Form\ElementInterface;
-use Zend\Form\View\Helper\FormElement;
+use Laminas\Form\Element\Text;
+use Laminas\Form\Element\Textarea;
+use Laminas\Form\ElementInterface;
+use Laminas\Form\View\Helper\FormElement;
 
 class FormControl extends AbstractHelper
 {
