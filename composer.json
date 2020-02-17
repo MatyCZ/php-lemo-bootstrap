@@ -6,7 +6,7 @@
         "bootstrap",
         "laminas"
     ],
-    "homepage": "https://github.com/MatyCZ/LemoBootstrap",
+    "homepage": "https://github.com/MatyCZ/php-lemo-bootstrap",
     "license": "BSD-3-Clause",
     "require": {
         "laminas/laminas-captcha": "^2.0",
