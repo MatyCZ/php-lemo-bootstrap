@@ -53,7 +53,7 @@ class FormGroupElement extends AbstractHelper
 
         // Add class to value options for multicheckbox and radio elements
         $classCheckbox = null;
-        if ($element instanceof Checkbox) {
+        if ($element instanceof Checkbox && !$element instanceof MultiCheckbox) {
             $classCheckbox = ' checkbox';
         }
 
