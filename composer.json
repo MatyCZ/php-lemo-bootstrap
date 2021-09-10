@@ -10,7 +10,6 @@
     "license": "BSD-3-Clause",
     "require": {
         "ext-intl": "*",
-        "laminas/laminas-captcha": "^2.0",
         "laminas/laminas-dependency-plugin": "^2.0",
         "laminas/laminas-form": "^2.0 || ^3.0",
         "laminas/laminas-i18n": "^2.0",
