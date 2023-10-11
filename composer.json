@@ -11,9 +11,6 @@
     "require": {
         "ext-intl": "*",
         "laminas/laminas-form": "^2.0 || ^3.0",
-        "laminas/laminas-i18n": "^2.0",
-        "laminas/laminas-mvc": "^3.0",
-        "laminas/laminas-mvc-plugin-flashmessenger": "^1.0",
         "laminas/laminas-stdlib": "^3.0",
         "laminas/laminas-view": "^2.0",
         "php": "^8.0"

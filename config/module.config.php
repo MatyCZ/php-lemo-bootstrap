@@ -3,11 +3,6 @@
 namespace Lemo\Bootstrap;
 
 return [
-    'controller_plugins' => [
-        'invokables' => [
-            'lemoFlashMessenger' => Mvc\Controller\Plugin\FlashMessenger::class,
-        ],
-    ],
     'view_helpers' => [
         'invokables' => [
             'formCaptchaImage' => Form\View\Helper\Captcha\Image::class,
