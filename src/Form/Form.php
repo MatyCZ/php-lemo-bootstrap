@@ -11,7 +11,7 @@ class Form extends \Laminas\Form\Form
     /**
      * @inheritdoc
      */
-    public function prepare()
+    public function prepare(): self
     {
         parent::prepare();
 
@@ -24,11 +24,6 @@ class Form extends \Laminas\Form\Form
         return $this;
     }
 
-    /**
-     * @param FieldsetInterface         $formOrFieldset
-     * @param InputFilterInterface|null $inputFilter
-     * @return self
-     */
     protected function appendAttributeRequired(
         FieldsetInterface $formOrFieldset,
         ?InputFilterInterface $inputFilter = null

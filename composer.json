@@ -11,6 +11,7 @@
     "require": {
         "ext-intl": "*",
         "laminas/laminas-form": "^2.0 || ^3.0",
+        "laminas/laminas-modulemanager": "^2.14",
         "laminas/laminas-stdlib": "^3.0",
         "laminas/laminas-view": "^2.0",
         "php": "^8.0"
