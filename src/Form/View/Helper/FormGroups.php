@@ -12,10 +12,9 @@ use Laminas\Form\FormInterface;
 
 class FormGroups extends AbstractHelper
 {
-    public function __construct(
-        protected ?FormGroupElement $helperFormGroupElement = null,
-        protected ?FormGroupsCollection $helperFormGroupsCollection = null,
-    ) {}
+    protected ?FormGroupElement $formGroupElement = null;
+
+    protected ?FormGroupsCollection $formGroupsCollection = null;
 
     /**
      * @throws Exception
@@ -40,9 +39,9 @@ class FormGroups extends AbstractHelper
             $this->setSizeOfBox($boxSize);
         }
 
-        $formGroupElement = $this->helperFormGroupElement;
+        $formGroupElement = $this->getFormGroupElement();
         $formGroups = $this;
-        $formGroupsCollection = $this->helperFormGroupsCollection;
+        $formGroupsCollection = $this->getFormGroupsCollection();
 
         $markup = '';
         foreach ($elementNames as $elementName) {
@@ -62,5 +61,31 @@ class FormGroups extends AbstractHelper
         }
 
         return $markup;
+    }
+
+    protected function getFormGroupElement(): FormGroupElement
+    {
+        if ($this->formGroupElement instanceof FormGroupElement) {
+            return $this->formGroupElement;
+        }
+
+        $this->formGroupElement = new FormGroupElement();
+        $this->formGroupElement->setTranslator($this->getTranslator());
+        $this->formGroupElement->setView($this->getView());
+
+        return $this->formGroupElement;
+    }
+
+    protected function getFormGroupsCollection(): FormGroupsCollection
+    {
+        if ($this->formGroupsCollection instanceof FormGroupsCollection) {
+            return $this->formGroupsCollection;
+        }
+
+        $this->formGroupsCollection = new FormGroupsCollection();
+        $this->formGroupsCollection->setTranslator($this->getTranslator());
+        $this->formGroupsCollection->setView($this->getView());
+
+        return $this->formGroupsCollection;
     }
 }

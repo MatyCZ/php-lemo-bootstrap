@@ -15,11 +15,11 @@ use function trim;
 
 class FormGroupsCollection extends AbstractHelper
 {
-    public function __construct(
-        protected ?FormGroupElement $formGroupElement = null,
-        protected ?FormGroupElements $formGroupElements = null,
-        protected ?FormGroupsFieldset $formGroupsFieldset = null,
-    ) {}
+    protected ?FormGroupElement $formGroupElement = null;
+
+    protected ?FormGroupElements $formGroupElements = null;
+
+    protected ?FormGroupsFieldset $formGroupsFieldset = null;
 
     /**
      * @throws Exception
@@ -38,9 +38,9 @@ class FormGroupsCollection extends AbstractHelper
      */
     public function render(Collection $collection, bool $inline = false): string
     {
-        $formGroupElement = $this->formGroupElement;
-        $formGroupElements = $this->formGroupElements;
-        $formGroupsFieldset = $this->formGroupsFieldset;
+        $formGroupElement = $this->getFormGroupElement();
+        $formGroupElements = $this->getFormGroupElements();
+        $formGroupsFieldset = $this->getFormGroupsFieldset();
 
         // Render elements
         $markup = '';
@@ -72,9 +72,9 @@ class FormGroupsCollection extends AbstractHelper
         bool $inline = false,
         bool $returnOnlyTemplateContent = false,
     ): string {
-        $formGroupElement = $this->formGroupElement;
-        $formGroupElements = $this->formGroupElements;
-        $formGroupsFieldset = $this->formGroupsFieldset;
+        $formGroupElement = $this->getFormGroupElement();
+        $formGroupElements = $this->getFormGroupElements();
+        $formGroupsFieldset = $this->getFormGroupsFieldset();
 
         $templateElement = $collection->getTemplateElement();
 
@@ -104,5 +104,44 @@ class FormGroupsCollection extends AbstractHelper
             '<span %s></span>',
             $this->createAttributesString($attributes),
         );
+    }
+
+    protected function getFormGroupElement(): FormGroupElement
+    {
+        if ($this->formGroupElement instanceof FormGroupElement) {
+            return $this->formGroupElement;
+        }
+
+        $this->formGroupElement = new FormGroupElement();
+        $this->formGroupElement->setTranslator($this->getTranslator());
+        $this->formGroupElement->setView($this->getView());
+
+        return $this->formGroupElement;
+    }
+
+    protected function getFormGroupElements(): FormGroupElements
+    {
+        if ($this->formGroupElements instanceof FormGroupElements) {
+            return $this->formGroupElements;
+        }
+
+        $this->formGroupElements = new FormGroupElements();
+        $this->formGroupElements->setTranslator($this->getTranslator());
+        $this->formGroupElements->setView($this->getView());
+
+        return $this->formGroupElements;
+    }
+
+    protected function getFormGroupsFieldset(): FormGroupsFieldset
+    {
+        if ($this->formGroupsFieldset instanceof FormGroupsFieldset) {
+            return $this->formGroupsFieldset;
+        }
+
+        $this->formGroupsFieldset = new FormGroupsFieldset();
+        $this->formGroupsFieldset->setTranslator($this->getTranslator());
+        $this->formGroupsFieldset->setView($this->getView());
+
+        return $this->formGroupsFieldset;
     }
 }

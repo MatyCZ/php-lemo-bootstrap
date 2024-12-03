@@ -15,13 +15,11 @@ use const PHP_EOL;
 
 class FormControls extends AbstractHelper
 {
+    protected ?FormControl $formControl = null;
+
     protected string $templateCloseTag = '';
 
     protected string $templateOpenTag = '';
-
-    public function __construct(
-        protected ?FormControl $formControl = null,
-    ) {}
 
     public function __invoke(?ElementInterface $element = null): self|string
     {
@@ -34,7 +32,7 @@ class FormControls extends AbstractHelper
 
     public function render(ElementInterface $element): string
     {
-        $formControl = $this->formControl;
+        $formControl = $this->getFormControl();
 
         $content = '';
 
@@ -63,5 +61,18 @@ class FormControls extends AbstractHelper
     public function closeTag(): string
     {
         return $this->templateCloseTag;
+    }
+
+    protected function getFormControl(): FormControl
+    {
+        if ($this->formControl instanceof FormControl) {
+            return $this->formControl;
+        }
+
+        $this->formControl = new FormControl();
+        $this->formControl->setTranslator($this->getTranslator());
+        $this->formControl->setView($this->getView());
+
+        return $this->formControl;
     }
 }

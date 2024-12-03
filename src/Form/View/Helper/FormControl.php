@@ -27,6 +27,14 @@ use const PHP_EOL;
 
 class FormControl extends AbstractHelper
 {
+    protected ?FormControlAddon $formControlAddon = null;
+
+    protected ?FormControlButton $formControlButton = null;
+
+    protected ?FormControlHelpBlock $formControlHelpBlock = null;
+
+    protected ?FormElement $formElement = null;
+
     /**
      * List of elements with value options
      */
@@ -35,13 +43,6 @@ class FormControl extends AbstractHelper
         'multicheckbox',
         'radio',
     ];
-
-    public function __construct(
-        protected ?FormControlAddon $formControlAddon = null,
-        protected ?FormControlButton $formControlButton = null,
-        protected ?FormControlHelpBlock $formControlHelpBlock = null,
-        protected ?FormElement $formElement = null,
-    ) {}
 
     public function __invoke(?ElementInterface $element = null): self|string
     {
@@ -54,10 +55,10 @@ class FormControl extends AbstractHelper
 
     public function render(ElementInterface $element): string
     {
-        $formControlAddon = $this->formControlAddon;
-        $formControlButton = $this->formControlButton;
-        $formControlHelpBlock  = $this->formControlHelpBlock;
-        $formElement = $this->formElement;
+        $formControlAddon = $this->getFormControlAddon();
+        $formControlButton = $this->getFormControlButton();
+        $formControlHelpBlock  = $this->getFormControlHelpBlock();
+        $formElement = $this->getFormElement();
 
         $id = $this->getId($element);
         $id = trim(strtr($id, ['[' => '-', ']' => '']), '-');
@@ -172,5 +173,56 @@ class FormControl extends AbstractHelper
         }
 
         return $content . ($formControlHelpBlock($element) . PHP_EOL);
+    }
+
+    protected function getFormControlAddon(): FormControlAddon
+    {
+        if ($this->formControlAddon instanceof FormControlAddon) {
+            return $this->formControlAddon;
+        }
+
+        $this->formControlAddon = new FormControlAddon();
+        $this->formControlAddon->setTranslator($this->getTranslator());
+        $this->formControlAddon->setView($this->getView());
+
+        return $this->formControlAddon;
+    }
+
+    protected function getFormControlButton(): FormControlButton
+    {
+        if ($this->formControlButton instanceof FormControlButton) {
+            return $this->formControlButton;
+        }
+
+        $this->formControlButton = new FormControlButton();
+        $this->formControlButton->setTranslator($this->getTranslator());
+        $this->formControlButton->setView($this->getView());
+
+        return $this->formControlButton;
+    }
+
+    protected function getFormControlHelpBlock(): FormControlHelpBlock
+    {
+        if ($this->formControlHelpBlock instanceof FormControlHelpBlock) {
+            return $this->formControlHelpBlock;
+        }
+
+        $this->formControlHelpBlock = new FormControlHelpBlock();
+        $this->formControlHelpBlock->setTranslator($this->getTranslator());
+        $this->formControlHelpBlock->setView($this->getView());
+
+        return $this->formControlHelpBlock;
+    }
+
+    protected function getFormElement(): FormElement
+    {
+        if ($this->formElement instanceof FormElement) {
+            return $this->formElement;
+        }
+
+        $this->formElement = new FormElement();
+        $this->formElement->setView($this->getView());
+
+        return $this->formElement;
     }
 }

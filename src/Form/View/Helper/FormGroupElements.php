@@ -17,14 +17,13 @@ use const PHP_EOL;
 
 class FormGroupElements extends AbstractHelper
 {
+    protected ?FormControlLabel $formControlLabel = null;
+
+    protected ?FormControls $formControls = null;
+
     protected string $templateCloseTag = '</div>';
 
     protected string $templateOpenTag = '<div class="form-group form-group-sm%s%s" id="form-group-%s">';
-
-    public function __construct(
-        protected ?FormControlLabel $formControlLabel = null,
-        protected ?FormControls $formControls = null,
-    ) {}
 
     public function __invoke(ElementInterface $element): string
     {
@@ -33,8 +32,8 @@ class FormGroupElements extends AbstractHelper
 
     public function render(ElementInterface $element): string
     {
-        $formControlLabel = $this->formControlLabel;
-        $formControls = $this->formControls;
+        $formControlLabel = $this->getFormControlLabel();
+        $formControls = $this->getFormControls();
 
         $markup = '';
         if ('' != $element->getLabel()) {
@@ -82,5 +81,31 @@ class FormGroupElements extends AbstractHelper
     public function closeTag(): string
     {
         return $this->templateCloseTag;
+    }
+
+    protected function getFormControlLabel(): FormControlLabel
+    {
+        if ($this->formControlLabel instanceof FormControlLabel) {
+            return $this->formControlLabel;
+        }
+
+        $this->formControlLabel = new FormControlLabel();
+        $this->formControlLabel->setTranslator($this->getTranslator());
+        $this->formControlLabel->setView($this->getView());
+
+        return $this->formControlLabel;
+    }
+
+    protected function getFormControls(): FormControls
+    {
+        if ($this->formControls instanceof FormControls) {
+            return $this->formControls;
+        }
+
+        $this->formControls = new FormControls();
+        $this->formControls->setTranslator($this->getTranslator());
+        $this->formControls->setView($this->getView());
+
+        return $this->formControls;
     }
 }

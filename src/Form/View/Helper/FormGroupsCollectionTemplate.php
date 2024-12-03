@@ -14,6 +14,10 @@ use function trim;
 
 class FormGroupsCollectionTemplate extends AbstractHelper
 {
+    protected ?FormControl $formControl = null;
+
+    protected ?FormGroupElement $formGroupElement = null;
+
     protected ?string $template = null;
 
     protected string $templatePlaceholderIndex = '__index__';
@@ -23,11 +27,6 @@ class FormGroupsCollectionTemplate extends AbstractHelper
     protected array $templatePlaceholdersElement = [];
 
     protected array $templatePlaceholdersElementGroups = [];
-
-    public function __construct(
-        protected ?FormControl $formControl = null,
-        protected ?FormGroupElement $formGroupElement = null,
-    ) {}
 
     public function __invoke(?Collection $collection = null): self|string
     {
@@ -40,8 +39,8 @@ class FormGroupsCollectionTemplate extends AbstractHelper
 
     public function render(Collection $collection): string
     {
-        $formControl = $this->formControl;
-        $formGroupElement = $this->formGroupElement;
+        $formControl = $this->getFormControl();
+        $formGroupElement = $this->getFormGroupElement();
 
         $markup = '';
         foreach ($collection->getIterator() as $index => $elementOrFieldset) {
@@ -101,8 +100,8 @@ class FormGroupsCollectionTemplate extends AbstractHelper
      */
     public function renderTemplate(Collection $collection, bool $returnOnlyTemplateContent = false): string
     {
-        $formControl = $this->formControl;
-        $formGroupElement = $this->formGroupElement;
+        $formControl = $this->getFormControl();
+        $formGroupElement = $this->getFormGroupElement();
 
         $template = $this->getTemplate();
         $templateElement = $collection->getTemplateElement();
@@ -207,5 +206,31 @@ class FormGroupsCollectionTemplate extends AbstractHelper
     public function getTemplatePlaceholdersElementGroups(): array
     {
         return $this->templatePlaceholdersElementGroups;
+    }
+
+    protected function getFormControl(): FormControl
+    {
+        if ($this->formControl instanceof FormControl) {
+            return $this->formControl;
+        }
+
+        $this->formControl = new FormControl();
+        $this->formControl->setTranslator($this->getTranslator());
+        $this->formControl->setView($this->getView());
+
+        return $this->formControl;
+    }
+
+    protected function getFormGroupElement(): FormGroupElement
+    {
+        if ($this->formGroupElement instanceof FormGroupElement) {
+            return $this->formGroupElement;
+        }
+
+        $this->formGroupElement = new FormGroupElement();
+        $this->formGroupElement->setTranslator($this->getTranslator());
+        $this->formGroupElement->setView($this->getView());
+
+        return $this->formGroupElement;
     }
 }

@@ -11,10 +11,9 @@ use Laminas\Form\FieldsetInterface;
 
 class FormGroupsFieldset extends AbstractHelper
 {
-    public function __construct(
-        protected ?FormGroupElement $formGroupElement = null,
-        protected ?FormGroupsCollection $formGroupsCollection = null,
-    ) {}
+    protected ?FormGroupElement $formGroupElement = null;
+
+    protected ?FormGroupsCollection $formGroupsCollection = null;
 
     /**
      * @throws Exception
@@ -33,8 +32,8 @@ class FormGroupsFieldset extends AbstractHelper
      */
     public function render(FieldsetInterface $fieldset): string
     {
-        $helperFormGroupElement = $this->formGroupElement;
-        $helperFormGroupsCollection = $this->formGroupsCollection;
+        $helperFormGroupElement = $this->getFormGroupElement();
+        $helperFormGroupsCollection = $this->getFormGroupsCollection();
         $formGroupsFieldset = $this;
 
         $markup = '';
@@ -49,5 +48,31 @@ class FormGroupsFieldset extends AbstractHelper
         }
 
         return $markup;
+    }
+
+    protected function getFormGroupElement(): FormGroupElement
+    {
+        if ($this->formGroupElement instanceof FormGroupElement) {
+            return $this->formGroupElement;
+        }
+
+        $this->formGroupElement = new FormGroupElement();
+        $this->formGroupElement->setTranslator($this->getTranslator());
+        $this->formGroupElement->setView($this->getView());
+
+        return $this->formGroupElement;
+    }
+
+    protected function getFormGroupsCollection(): FormGroupsCollection
+    {
+        if ($this->formGroupsCollection instanceof FormGroupsCollection) {
+            return $this->formGroupsCollection;
+        }
+
+        $this->formGroupsCollection = new FormGroupsCollection();
+        $this->formGroupsCollection->setTranslator($this->getTranslator());
+        $this->formGroupsCollection->setView($this->getView());
+
+        return $this->formGroupsCollection;
     }
 }
