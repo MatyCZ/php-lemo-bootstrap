@@ -1,29 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lemo\Bootstrap\Form\View\Helper;
 
+use Exception;
 use Laminas\Form\Element\Collection;
 use Laminas\Form\ElementInterface;
 use Laminas\Form\FieldsetInterface;
 
+use function sprintf;
+use function strtr;
+use function trim;
+
 class FormGroupsCollection extends AbstractHelper
 {
-    protected ?FormGroupElement $helperFormGroupElement = null;
-    protected ?FormGroupElements $helperFormGroupElements = null;
-    protected ?FormGroupsFieldset $helperFormGroupsFieldset = null;
+    public function __construct(
+        protected ?FormGroupElement $formGroupElement = null,
+        protected ?FormGroupElements $formGroupElements = null,
+        protected ?FormGroupsFieldset $formGroupsFieldset = null,
+    ) {}
 
     /**
-     * Invoke helper as function
-     *
-     * Proxies to {@link render()}.
-     *
-     * @param  Collection|null $collection
-     * @param  bool            $inline
-     * @return string|FormGroupsCollection
+     * @throws Exception
      */
-    public function __invoke(Collection $collection = null, bool $inline = false)
+    public function __invoke(Collection $collection = null, bool $inline = false): self|string
     {
-        if (!$collection) {
+        if (!$collection instanceof Collection) {
             return $this;
         }
 
@@ -31,35 +34,25 @@ class FormGroupsCollection extends AbstractHelper
     }
 
     /**
-     * Render a collection by iterating through all fieldsets and elements
-     *
-     * @param  Collection $collection
-     * @param  bool       $inline
-     * @return string
+     * @throws Exception
      */
     public function render(Collection $collection, bool $inline = false): string
     {
-        $renderer = $this->getView();
-
-        if (!method_exists($renderer, 'plugin')) {
-            return '';
-        }
-
-        $helperFormGroupElement  = $this->getHelperFormGroupElement();
-        $helperFormGroupElements  = $this->getHelperFormGroupElements();
-        $helperFormGroupFieldset = $this->getHelperFormGroupsFieldset();
+        $formGroupElement = $this->formGroupElement;
+        $formGroupElements = $this->formGroupElements;
+        $formGroupsFieldset = $this->formGroupsFieldset;
 
         // Render elements
         $markup = '';
         foreach ($collection->getIterator() as $elementOrFieldset) {
             if ($elementOrFieldset instanceof FieldsetInterface) {
-                if (true === $inline) {
-                    $markup .= $helperFormGroupElements($elementOrFieldset);
+                if ($inline) {
+                    $markup .= $formGroupElements($elementOrFieldset);
                 } else {
-                    $markup .= $helperFormGroupFieldset($elementOrFieldset);
+                    $markup .= $formGroupsFieldset($elementOrFieldset);
                 }
             } elseif ($elementOrFieldset instanceof ElementInterface) {
-                $markup .= $helperFormGroupElement($elementOrFieldset);
+                $markup .= $formGroupElement($elementOrFieldset);
             }
         }
 
@@ -72,115 +65,44 @@ class FormGroupsCollection extends AbstractHelper
     }
 
     /**
-     * Only render a template
-     *
-     * @param  Collection $collection
-     * @param  bool       $inline
-     * @param  bool       $returnOnlyTemplateContent
-     * @return string
+     * @throws Exception
      */
     public function renderTemplate(
         Collection $collection,
         bool $inline = false,
-        bool $returnOnlyTemplateContent = false
+        bool $returnOnlyTemplateContent = false,
     ): string {
-        $helperFormGroupElement = $this->getHelperFormGroupElement();
-        $helperFormGroupElements = $this->getHelperFormGroupElements();
-        $helperFormGroupsFieldset = $this->getHelperFormGroupsFieldset();
+        $formGroupElement = $this->formGroupElement;
+        $formGroupElements = $this->formGroupElements;
+        $formGroupsFieldset = $this->formGroupsFieldset;
 
         $templateElement = $collection->getTemplateElement();
 
         $markup = '';
         if ($templateElement instanceof FieldsetInterface) {
-            if (true === $inline) {
-                $markup .= $helperFormGroupElements($templateElement);
+            if ($inline) {
+                $markup .= $formGroupElements($templateElement);
             } else {
-                $markup .= $helperFormGroupsFieldset($templateElement);
+                $markup .= $formGroupsFieldset($templateElement);
             }
         } elseif ($templateElement instanceof ElementInterface) {
-            $markup .= $helperFormGroupElement($templateElement);
+            $markup .= $formGroupElement($templateElement);
         }
 
-        if (true === $returnOnlyTemplateContent) {
+        if ($returnOnlyTemplateContent) {
             return $markup;
         }
 
         $id = $this->getId($collection);
-        $id = trim(strtr($id, array('[' => '-', ']' => '')), '-');
+        $id = trim(strtr($id, ['[' => '-', ']' => '']), '-');
 
-        $attributes = array(
-            'id' => 'form-template-' . $id,
-            'data-template' => $markup
-        );
+        $attributes = ['id' => 'form-template-' . $id, 'data-template' => $markup];
 
         $attributes = $this->prepareAttributes($attributes);
 
         return sprintf(
             '<span %s></span>',
-            $this->createAttributesString($attributes)
+            $this->createAttributesString($attributes),
         );
-    }
-
-    /**
-     * Retrieve the FormGroupElement helper
-     *
-     * @return FormGroupElement
-     */
-    protected function getHelperFormGroupElement(): FormGroupElement
-    {
-        if ($this->helperFormGroupElement) {
-            return $this->helperFormGroupElement;
-        }
-
-        if (!$this->helperFormGroupElement instanceof FormGroupElement) {
-            $this->helperFormGroupElement = new FormGroupElement();
-        }
-
-        $this->helperFormGroupElement->setTranslator($this->getTranslator());
-        $this->helperFormGroupElement->setView($this->getView());
-
-        return $this->helperFormGroupElement;
-    }
-
-    /**
-     * Retrieve the FormGroupElements helper
-     *
-     * @return FormGroupElements
-     */
-    protected function getHelperFormGroupElements(): FormGroupElements
-    {
-        if ($this->helperFormGroupElements) {
-            return $this->helperFormGroupElements;
-        }
-
-        if (!$this->helperFormGroupElements instanceof FormGroupElements) {
-            $this->helperFormGroupElements = new FormGroupElements();
-        }
-
-        $this->helperFormGroupElements->setTranslator($this->getTranslator());
-        $this->helperFormGroupElements->setView($this->getView());
-
-        return $this->helperFormGroupElements;
-    }
-
-    /**
-     * Retrieve the FormGroupsFieldset helper
-     *
-     * @return FormGroupsFieldset
-     */
-    protected function getHelperFormGroupsFieldset(): FormGroupsFieldset
-    {
-        if ($this->helperFormGroupsFieldset) {
-            return $this->helperFormGroupsFieldset;
-        }
-
-        if (!$this->helperFormGroupsFieldset instanceof FormGroupsFieldset) {
-            $this->helperFormGroupsFieldset = new FormGroupsFieldset();
-        }
-
-        $this->helperFormGroupsFieldset->setTranslator($this->getTranslator());
-        $this->helperFormGroupsFieldset->setView($this->getView());
-
-        return $this->helperFormGroupsFieldset;
     }
 }

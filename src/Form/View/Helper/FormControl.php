@@ -1,23 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lemo\Bootstrap\Form\View\Helper;
 
+use DateTime;
+use IntlDateFormatter;
 use Laminas\Form\Element\Text;
 use Laminas\Form\Element\Textarea;
 use Laminas\Form\ElementInterface;
 use Laminas\Form\View\Helper\FormElement;
+use Locale;
+
+use function current;
+use function html_entity_decode;
+use function implode;
+use function in_array;
+use function is_array;
+use function str_replace;
+use function strtolower;
+use function strtr;
+use function trim;
+
+use const ENT_COMPAT;
+use const PHP_EOL;
 
 class FormControl extends AbstractHelper
 {
-    protected ?FormElement $helperFormElement = null;
-    protected ?FormControlAddon $helperFormControlAddon = null;
-    protected ?FormControlButton $helperFormControlButton = null;
-    protected ?FormControlHelpBlock $helperFormControlHelpBlock = null;
-
     /**
      * List of elements with value options
-     *
-     * @var array
      */
     protected array $elementsValueOptions = [
         'multi_checkbox',
@@ -25,53 +36,53 @@ class FormControl extends AbstractHelper
         'radio',
     ];
 
-    /**
-     * Invoke helper as function
-     *
-     * Proxies to {@link render()}.
-     *
-     * @param  ElementInterface|null $element
-     * @return string|self
-     */
-    public function __invoke(?ElementInterface $element = null)
+    public function __construct(
+        protected ?FormControlAddon $formControlAddon = null,
+        protected ?FormControlButton $formControlButton = null,
+        protected ?FormControlHelpBlock $formControlHelpBlock = null,
+        protected ?FormElement $formElement = null,
+    ) {}
+
+    public function __invoke(?ElementInterface $element = null): self|string
     {
-        if (!$element) {
+        if (!$element instanceof ElementInterface) {
             return $this;
         }
 
         return $this->render($element);
     }
-    /**
-     * Render
-     *
-     * @param ElementInterface $element
-     * @return string
-     */
+
     public function render(ElementInterface $element): string
     {
-        $helperFormElement = $this->getHelperFormElement();
-        $helperFormControlAddon = $this->getHelperFormControlAddon();
-        $helperFormControlButton = $this->getHelperFormControlButton();
-        $helperFormControlHelpBlock  = $this->getHelperFormControlHelpBlock();
+        $formControlAddon = $this->formControlAddon;
+        $formControlButton = $this->formControlButton;
+        $formControlHelpBlock  = $this->formControlHelpBlock;
+        $formElement = $this->formElement;
 
         $id = $this->getId($element);
-        $id = trim(strtr($id, array('[' => '-', ']' => '')), '-');
+        $id = trim(strtr($id, ['[' => '-', ']' => '']), '-');
 
         $type = strtolower($element->getAttribute('type'));
         $classCheckboxOrRadio = null;
         $content = '';
 
         // Renderovani datumu dle locale
-        if ($element->getValue() instanceof \DateTime) {
-            $formatter = new \IntlDateFormatter(
-                \Locale::getDefault(),
-                \IntlDateFormatter::MEDIUM,
-                \IntlDateFormatter::NONE,
+        if ($element->getValue() instanceof DateTime) {
+            $intlDateFormatter = new IntlDateFormatter(
+                Locale::getDefault(),
+                IntlDateFormatter::MEDIUM,
+                IntlDateFormatter::NONE,
                 $element->getValue()->getTimezone()->getName(),
-                \IntlDateFormatter::GREGORIAN
+                IntlDateFormatter::GREGORIAN,
             );
 
-            $element->setValue(str_replace(' ', '', $formatter->format($element->getValue())));
+            $element->setValue(
+                str_replace(
+                    ' ',
+                    '',
+                    $intlDateFormatter->format($element->getValue()),
+                ),
+            );
         }
 
         // Element value
@@ -81,10 +92,10 @@ class FormControl extends AbstractHelper
         ) {
             $element->setValue(
                 html_entity_decode(
-                    $element->getValue(),
+                    (string) $element->getValue(),
                     ENT_COMPAT,
-                    'UTF-8'
-                )
+                    'UTF-8',
+                ),
             );
         }
 
@@ -97,38 +108,55 @@ class FormControl extends AbstractHelper
 
         $element->setAttribute('id', $id);
 
-        if (null !== $element->getOption('addon') || null !== $element->getOption('button') || null !== $element->getOption('append') || null !== $element->getOption('prepend')) {
+        if (
+            null !== $element->getOption('addon')
+            || null !== $element->getOption('button')
+            || null !== $element->getOption('append')
+            || null !== $element->getOption('prepend')
+        ) {
             $content .= '<div class="input-group input-group-sm">' . PHP_EOL;
         }
 
         // Addon - Pre
         if (null !== $element->getOption('prepend')) {
-            $content .= $helperFormControlAddon($element->setOption('addon', $element->getOption('prepend'))) . PHP_EOL;
+            $content .= $formControlAddon(
+                $element->setOption('addon', $element->getOption('prepend')),
+            ) . PHP_EOL;
         }
 
         // Element
-        $content .= $helperFormElement($element) . PHP_EOL;
+        $content .= $formElement($element) . PHP_EOL;
 
         // Addon - Post
         if (null !== $element->getOption('append')) {
-            $content .= $helperFormControlAddon($element->setOption('addon', $element->getOption('append'))) . PHP_EOL;
+            $content .= $formControlAddon(
+                $element->setOption('addon', $element->getOption('append')),
+            ) . PHP_EOL;
         }
 
         // Button
         if (null !== $element->getOption('button')) {
-            $content .= $helperFormControlButton($element, $element->getOption('button')) . PHP_EOL;
+            $content .= $formControlButton($element) . PHP_EOL;
         }
 
         if (in_array($type, $this->elementsValueOptions)) {
-            $content = str_replace('/label><label', '/label></div><div class="' . $classCheckboxOrRadio . '"><label', $content);
+            $content = str_replace(
+                '/label><label',
+                '/label></div><div class="' . $classCheckboxOrRadio . '"><label',
+                $content,
+            );
             $content .= '</div>' . PHP_EOL;
         }
 
-        if (null !== $element->getOption('button') || null !== $element->getOption('append') || null !== $element->getOption('prepend')) {
+        if (
+            null !== $element->getOption('button')
+            || null !== $element->getOption('append')
+            || null !== $element->getOption('prepend')
+        ) {
             $content .= '</div>' . PHP_EOL;
         }
 
-        if (true === self::$renderErrorMessages && count($element->getMessages()) > 0) {
+        if (self::$renderErrorMessages && $element->getMessages() !== []) {
             $helpBlock = $element->getOption('help-block');
 
             $messages = [];
@@ -137,100 +165,12 @@ class FormControl extends AbstractHelper
             }
 
             foreach ($element->getMessages() as $message) {
-                if (is_array($message)) {
-                    $messages[] = current($message);
-                } else {
-                    $messages[] = $message;
-                }
+                $messages[] = is_array($message) ? current($message) : $message;
             }
+
             $element->setOption('help-block', implode('<br />', $messages));
         }
 
-        $content .= $helperFormControlHelpBlock($element) . PHP_EOL;
-
-        return $content;
-    }
-
-    /**
-     * Retrieve the FormControlAddon helper
-     *
-     * @return FormControlAddon
-     */
-    protected function getHelperFormControlAddon(): FormControlAddon
-    {
-        if ($this->helperFormControlAddon) {
-            return $this->helperFormControlAddon;
-        }
-
-        if (!$this->helperFormControlAddon instanceof FormControlAddon) {
-            $this->helperFormControlAddon = new FormControlAddon();
-        }
-
-        $this->helperFormControlAddon->setTranslator($this->getTranslator());
-        $this->helperFormControlAddon->setView($this->getView());
-
-        return $this->helperFormControlAddon;
-    }
-
-    /**
-     * Retrieve the FormControlButton helper
-     *
-     * @return FormControlButton
-     */
-    protected function getHelperFormControlButton(): FormControlButton
-    {
-        if ($this->helperFormControlButton) {
-            return $this->helperFormControlButton;
-        }
-
-        if (!$this->helperFormControlButton instanceof FormControlButton) {
-            $this->helperFormControlButton = new FormControlButton();
-        }
-
-        $this->helperFormControlButton->setTranslator($this->getTranslator());
-        $this->helperFormControlButton->setView($this->getView());
-
-        return $this->helperFormControlButton;
-    }
-
-    /**
-     * Retrieve the FormControlHelpBlock helper
-     *
-     * @return FormControlHelpBlock
-     */
-    protected function getHelperFormControlHelpBlock(): FormControlHelpBlock
-    {
-        if ($this->helperFormControlHelpBlock) {
-            return $this->helperFormControlHelpBlock;
-        }
-
-        if (!$this->helperFormControlHelpBlock instanceof FormControlHelpBlock) {
-            $this->helperFormControlHelpBlock = new FormControlHelpBlock();
-        }
-
-        $this->helperFormControlHelpBlock->setTranslator($this->getTranslator());
-        $this->helperFormControlHelpBlock->setView($this->getView());
-
-        return $this->helperFormControlHelpBlock;
-    }
-
-    /**
-     * Retrieve the FormElement helper
-     *
-     * @return FormElement
-     */
-    protected function getHelperFormElement(): FormElement
-    {
-        if ($this->helperFormElement) {
-            return $this->helperFormElement;
-        }
-
-        if (!$this->helperFormElement instanceof FormElement) {
-            $this->helperFormElement = new FormElement();
-        }
-
-        $this->helperFormElement->setView($this->getView());
-
-        return $this->helperFormElement;
+        return $content . ($formControlHelpBlock($element) . PHP_EOL);
     }
 }

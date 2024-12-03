@@ -1,10 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lemo\Bootstrap\Form\View\Helper;
 
 use Laminas\Form\ElementInterface;
 use Laminas\Form\Exception;
 use Laminas\Form\View\Helper\FormInput;
+
+use function is_array;
+use function sprintf;
+use function strtolower;
 
 class FormButton extends FormInput
 {
@@ -42,14 +48,11 @@ class FormButton extends FormInput
      * Invoke helper as functor
      *
      * Proxies to {@link render()}.
-     *
-     * @param  ElementInterface|null $element
-     * @param  string|null           $buttonContent
-     * @return string|self
      */
-    public function __invoke(?ElementInterface $element = null, ?string $buttonContent = null)
+    #[\Override]
+    public function __invoke(?ElementInterface $element = null, ?string $buttonContent = null): self|string
     {
-        if (!$element) {
+        if (!$element instanceof ElementInterface) {
             return $this;
         }
 
@@ -60,11 +63,9 @@ class FormButton extends FormInput
      * Render a form <button> element from the provided $element,
      * using content from $buttonContent or the element's "label" attribute
      *
-     * @param  ElementInterface $element
-     * @param  string|null $buttonContent
      * @throws Exception\DomainException
-     * @return string
      */
+    #[\Override]
     public function render(ElementInterface $element, ?string $buttonContent = null): string
     {
         $openTag = $this->openTag($element);
@@ -72,96 +73,83 @@ class FormButton extends FormInput
         if (null === $buttonContent) {
             $buttonContent = $element->getLabel();
             if (null === $buttonContent) {
-                throw new Exception\DomainException(sprintf(
-                    '%s expects either button content as the second argument, ' .
-                    'or that the element provided has a label value; neither found',
-                    __METHOD__
-                ));
+                throw new Exception\DomainException(
+                    sprintf(
+                        '%s expects either button content as the second argument, ' .
+                        'or that the element provided has a label value; neither found',
+                        __METHOD__,
+                    ),
+                );
             }
 
             if (null !== ($translator = $this->getTranslator())) {
                 $buttonContent = $translator->translate(
-                    $buttonContent, $this->getTranslatorTextDomain()
+                    $buttonContent,
+                    $this->getTranslatorTextDomain(),
                 );
             }
         }
 
-        $escape = $this->getEscapeHtmlHelper();
+        $escapeHtmlHelper = $this->getEscapeHtmlHelper();
 
-        return $openTag . $escape($buttonContent) . $this->closeTag();
+        return $openTag . $escapeHtmlHelper($buttonContent) . $this->closeTag();
     }
 
     /**
-     * Generate an opening button tag
-     *
-     * @param  null|array|ElementInterface $attributesOrElement
      * @throws Exception\InvalidArgumentException
      * @throws Exception\DomainException
-     * @return string
      */
-    public function openTag($attributesOrElement = null): string
+    public function openTag(ElementInterface|array|null $attributesOrElement = null): string
     {
         if (null === $attributesOrElement) {
             return '<button>';
         }
 
         if (is_array($attributesOrElement)) {
-            $attributes = $this->createAttributesString($attributesOrElement);
-            return sprintf('<button %s>', $attributes);
-        }
-
-        if (!$attributesOrElement instanceof ElementInterface) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                '%s expects an array or Laminas\Form\ElementInterface instance; received "%s"',
-                __METHOD__,
-                (is_object($attributesOrElement) ? get_class($attributesOrElement) : gettype($attributesOrElement))
-            ));
+            return sprintf(
+                '<button %s>',
+                $this->createAttributesString($attributesOrElement),
+            );
         }
 
         $element = $attributesOrElement;
-        $name    = $element->getName();
-        if (empty($name) && $name !== 0) {
-            throw new Exception\DomainException(sprintf(
-                '%s requires that the element has an assigned name; none discovered',
-                __METHOD__
-            ));
+        $name = $element->getName();
+        if (($name === null || $name === '' || $name === '0') && $name !== 0) {
+            throw new Exception\DomainException(
+                sprintf(
+                    '%s requires that the element has an assigned name; none discovered',
+                    __METHOD__,
+                ),
+            );
         }
 
-        $attributes          = $element->getAttributes();
-        $attributes['name']  = $name;
-        $attributes['type']  = $this->getType($element);
+        $attributes = $element->getAttributes();
+        $attributes['name'] = $name;
+        $attributes['type'] = $this->getType($element);
         $attributes['value'] = $element->getValue();
 
         return sprintf(
             '<button %s>',
-            $this->createAttributesString($attributes)
+            $this->createAttributesString($attributes),
         );
     }
 
-    /**
-     * Return a closing button tag
-     *
-     * @return string
-     */
     public function closeTag(): string
     {
         return '</button>';
     }
 
-    /**
-     * Determine button type to use
-     *
-     * @param  ElementInterface $element
-     * @return string
-     */
+    #[\Override]
     protected function getType(ElementInterface $element): string
     {
         $type = $element->getAttribute('type');
+
         if (empty($type)) {
             return 'button';
         }
 
         $type = strtolower($type);
+
         if (!isset($this->validTypes[$type])) {
             return 'button';
         }

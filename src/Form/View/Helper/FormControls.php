@@ -1,98 +1,67 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lemo\Bootstrap\Form\View\Helper;
 
 use Laminas\Form\ElementInterface;
 
+use function is_iterable;
+use function sprintf;
+use function strtr;
+use function trim;
+
+use const PHP_EOL;
+
 class FormControls extends AbstractHelper
 {
-    protected ?FormControl $helperFormControl = null;
     protected string $templateCloseTag = '';
+
     protected string $templateOpenTag = '';
 
-    /**
-     * Render form controls
-     *
-     * @param  ElementInterface|null $element
-     * @return string|self
-     */
-    public function __invoke(?ElementInterface $element = null)
+    public function __construct(
+        protected ?FormControl $formControl = null,
+    ) {}
+
+    public function __invoke(?ElementInterface $element = null): self|string
     {
-        if (null === $element) {
+        if (!$element instanceof ElementInterface) {
             return $this;
         }
 
         return $this->render($element);
     }
 
-    /**
-     * Render
-     *
-     * @param ElementInterface $element
-     * @return string
-     */
     public function render(ElementInterface $element): string
     {
-        $helperFormControl = $this->getHelperFormControl();
+        $formControl = $this->formControl;
 
         $content = '';
 
-        if (is_array($element) || $element instanceof \Traversable) {
+        if (is_iterable($element)) {
             foreach ($element as $el) {
-                $content .= $helperFormControl($el) . PHP_EOL;
+                $content .= $formControl($el) . PHP_EOL;
             }
         } else {
-            $content .= $helperFormControl($element) . PHP_EOL;
+            $content .= $formControl($element) . PHP_EOL;
         }
 
         return $this->openTag($element) . $content . $this->closeTag();
     }
 
-    /**
-     * Generate an opening tag
-     *
-     * @param  ElementInterface $element
-     * @return string
-     */
     public function openTag(ElementInterface $element): string
     {
         $id = $this->getId($element);
-        $id = trim(strtr($id, array('[' => '-', ']' => '')), '-');
+        $id = trim(strtr($id, ['[' => '-', ']' => '']), '-');
 
         return sprintf(
             $this->templateOpenTag,
-            $id
+            $id,
         );
     }
 
-    /**
-     * Generate a closing tag
-     *
-     * @return string
-     */
     public function closeTag(): string
     {
         return $this->templateCloseTag;
-    }
-
-    /**
-     * Retrieve the FormControl helper
-     *
-     * @return FormControl
-     */
-    protected function getHelperFormControl(): FormControl
-    {
-        if ($this->helperFormControl) {
-            return $this->helperFormControl;
-        }
-
-        if (!$this->helperFormControl instanceof FormControl) {
-            $this->helperFormControl = new FormControl();
-        }
-
-        $this->helperFormControl->setTranslator($this->getTranslator());
-        $this->helperFormControl->setView($this->getView());
-
-        return $this->helperFormControl;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lemo\Bootstrap\Form;
 
 use Laminas\Form\FieldsetInterface;
@@ -11,6 +13,7 @@ class Form extends \Laminas\Form\Form
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function prepare(): self
     {
         parent::prepare();
@@ -26,7 +29,7 @@ class Form extends \Laminas\Form\Form
 
     protected function appendAttributeRequired(
         FieldsetInterface $formOrFieldset,
-        ?InputFilterInterface $inputFilter = null
+        ?InputFilterInterface $inputFilter = null,
     ): self {
         foreach ($formOrFieldset->getFieldsets() as $fieldsetName => $fieldset) {
 
@@ -44,7 +47,7 @@ class Form extends \Laminas\Form\Form
                 if ($inputFilter->has($elementName) && $inputFilter->get($elementName)->isRequired()) {
                     $element->setAttribute('required', true);
                 }
-            } elseif ($formOrFieldset instanceOf InputFilterProviderInterface) {
+            } elseif ($formOrFieldset instanceof InputFilterProviderInterface) {
                 $spec = $formOrFieldset->getInputFilterSpecification();
 
                 if (!empty($spec[$elementName]['required'])) {

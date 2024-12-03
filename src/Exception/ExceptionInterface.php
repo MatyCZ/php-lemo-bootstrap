@@ -2,5 +2,4 @@
 
 namespace Lemo\Bootstrap\Exception;
 
-interface ExceptionInterface
-{}
+interface ExceptionInterface {}

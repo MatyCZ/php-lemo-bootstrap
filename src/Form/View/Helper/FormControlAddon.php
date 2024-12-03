@@ -1,34 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lemo\Bootstrap\Form\View\Helper;
 
 use Laminas\Form\ElementInterface;
+
+use function sprintf;
 
 class FormControlAddon extends AbstractHelper
 {
     protected string $template = '<span class="input-group-addon">%s</span>';
 
-    /**
-     * Magical Invoke Method
-     *
-     * @param  ElementInterface|null $element
-     * @return string|self
-     */
-    public function __invoke(?ElementInterface $element = null)
+    public function __invoke(?ElementInterface $element = null): self|string
     {
-        if (null === $element) {
+        if (!$element instanceof ElementInterface) {
             return $this;
         }
 
         return $this->render($element);
     }
 
-    /**
-     * Render addon
-     *
-     * @param  ElementInterface $element
-     * @return string
-     */
     public function render(ElementInterface $element): string
     {
         $string = '';
@@ -38,7 +30,8 @@ class FormControlAddon extends AbstractHelper
 
             if (null !== ($translator = $this->getTranslator())) {
                 $addon = $translator->translate(
-                    $addon, $this->getTranslatorTextDomain()
+                    $addon,
+                    $this->getTranslatorTextDomain(),
                 );
             }
 
@@ -48,23 +41,13 @@ class FormControlAddon extends AbstractHelper
         return $string;
     }
 
-    /**
-     * Set template for addon
-     *
-     * @param  string $template
-     * @return self
-     */
     public function setTemplate(string $template): self
     {
         $this->template = $template;
+
         return $this;
     }
 
-    /**
-     * Get template for addon
-     *
-     * @return string
-     */
     public function getTemplate(): string
     {
         return $this->template;

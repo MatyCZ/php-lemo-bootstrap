@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lemo\Bootstrap\Form\View\Helper;
 
 use Laminas\Form\Element\Checkbox;
@@ -8,36 +10,35 @@ use Laminas\Form\Element\MultiCheckbox;
 use Laminas\Form\Element\Radio;
 use Laminas\Form\ElementInterface;
 
+use function is_array;
+use function sprintf;
+use function strtr;
+use function trim;
+
 class FormGroupElement extends AbstractHelper
 {
-    protected ?FormControlLabel $helperControlLabel = null;
-    protected ?FormControls $helperControls = null;
     protected string $templateCloseTag = '</div>';
+
     protected string $templateOpenTag = '<div class="form-group form-group-sm%s%s" id="form-group-%s">';
 
-    /**
-     * Display a Form
-     *
-     * @param  ElementInterface $element
-     * @return string
-     */
+    public function __construct(
+        protected ?FormControlLabel $formControlLabel = null,
+        protected ?FormControls $formControls = null,
+    ) {}
+
     public function __invoke(ElementInterface $element): string
     {
         return $this->render($element);
     }
 
-    /**
-     * @param ElementInterface $element
-     * @return string
-     */
     public function render(ElementInterface $element): string
     {
-        $helperLabel = $this->getHelperControlLabel();
-        $helperControls = $this->getHelperControls();
+        $formControlLabel = $this->formControlLabel;
+        $formControls = $this->formControls;
 
         $markup = '';
         if ('' != $element->getLabel()) {
-            $markup .= $helperLabel($element);
+            $markup .= $formControlLabel($element);
         }
 
         // Add class to value options for multicheckbox and radio elements
@@ -47,7 +48,7 @@ class FormGroupElement extends AbstractHelper
         }
 
         $id = $this->getId($element);
-        $id = trim(strtr($id, array('[' => '-', ']' => '')), '-');
+        $id = trim(strtr($id, ['[' => '-', ']' => '']), '-');
 
         // Add ID to value options
         if ($element instanceof MultiCheckbox || $element instanceof Radio) {
@@ -59,7 +60,7 @@ class FormGroupElement extends AbstractHelper
                         'label' => $label,
                         'attributes' => [
                             'id' => $id . '-' . $value,
-                        ]
+                        ],
                     ];
                 } else {
                     $valueOptions[$value] = $label;
@@ -69,21 +70,15 @@ class FormGroupElement extends AbstractHelper
             $element->setValueOptions($valueOptions);
         }
 
-        $markup .= '<div class="col-md-' . $this->getSizeForElement() . $classCheckbox . '">' . $helperControls($element) . '</div>';
+        $markup .= '<div class="col-md-' . $this->getSizeForElement() . $classCheckbox . '">' . $formControls($element) . '</div>';
 
         return $this->openTag($element) . $markup . $this->closeTag();
     }
 
-    /**
-     * Generate an opening form tag
-     *
-     * @param  ElementInterface $element
-     * @return string
-     */
     public function openTag(ElementInterface $element): string
     {
         $id = $this->getId($element);
-        $id = trim(strtr($id, array('[' => '-', ']' => '')), '-');
+        $id = trim(strtr($id, ['[' => '-', ']' => '']), '-');
 
         $classHide = $element->getOption('hidden') ? ' hidden' : null;
         $classError = null;
@@ -91,7 +86,8 @@ class FormGroupElement extends AbstractHelper
         if ($element instanceof Hidden) {
             $classHide = ' hidden';
         }
-        if (count($element->getMessages()) > 0) {
+
+        if ($element->getMessages() !== []) {
             $classError = ' has-error';
         }
 
@@ -99,59 +95,12 @@ class FormGroupElement extends AbstractHelper
             $this->templateOpenTag,
             $classHide,
             $classError,
-            $id
+            $id,
         );
     }
 
-    /**
-     * Generate a closing form tag
-     *
-     * @return string
-     */
     public function closeTag(): string
     {
         return $this->templateCloseTag;
-    }
-
-    /**
-     * Retrieve the FormControlLabel helper
-     *
-     * @return FormControlLabel
-     */
-    protected function getHelperControlLabel(): FormControlLabel
-    {
-        if ($this->helperControlLabel) {
-            return $this->helperControlLabel;
-        }
-
-        if (!$this->helperControlLabel instanceof FormControlLabel) {
-            $this->helperControlLabel = new FormControlLabel();
-        }
-
-        $this->helperControlLabel->setTranslator($this->getTranslator());
-        $this->helperControlLabel->setView($this->getView());
-
-        return $this->helperControlLabel;
-    }
-
-    /**
-     * Retrieve the FormControls helper
-     *
-     * @return FormControls
-     */
-    protected function getHelperControls(): FormControls
-    {
-        if ($this->helperControls) {
-            return $this->helperControls;
-        }
-
-        if (!$this->helperControls instanceof FormControls) {
-            $this->helperControls = new FormControls();
-        }
-
-        $this->helperControls->setTranslator($this->getTranslator());
-        $this->helperControls->setView($this->getView());
-
-        return $this->helperControls;
     }
 }

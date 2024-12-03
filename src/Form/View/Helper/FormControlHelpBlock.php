@@ -1,34 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lemo\Bootstrap\Form\View\Helper;
 
 use Laminas\Form\ElementInterface;
+
+use function sprintf;
 
 class FormControlHelpBlock extends AbstractHelper
 {
     protected string $template = '<span class="help-block">%s</span>';
 
-    /**
-     * Magical Invoke Method
-     *
-     * @param  ElementInterface|null $element
-     * @return string|self
-     */
-    public function __invoke(?ElementInterface $element = null)
+    public function __invoke(?ElementInterface $element = null): self|string
     {
-        if (null === $element) {
+        if (!$element instanceof ElementInterface) {
             return $this;
         }
 
         return $this->render($element);
     }
 
-    /**
-     * Render block help
-     *
-     * @param  ElementInterface $element
-     * @return string
-     */
     public function render(ElementInterface $element): string
     {
         $string = '';
@@ -38,7 +30,8 @@ class FormControlHelpBlock extends AbstractHelper
 
             if (null !== ($translator = $this->getTranslator())) {
                 $help = $translator->translate(
-                    $help, $this->getTranslatorTextDomain()
+                    $help,
+                    $this->getTranslatorTextDomain(),
                 );
             }
 
@@ -48,23 +41,13 @@ class FormControlHelpBlock extends AbstractHelper
         return $string;
     }
 
-    /**
-     * Set template for help
-     *
-     * @param  string $template
-     * @return FormControlHelpBlock
-     */
     public function setTemplate(string $template): self
     {
         $this->template = $template;
+
         return $this;
     }
 
-    /**
-     * Get template for help
-     *
-     * @return string
-     */
     public function getTemplate(): string
     {
         return $this->template;

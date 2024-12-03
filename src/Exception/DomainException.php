@@ -2,6 +2,4 @@
 
 namespace Lemo\Bootstrap\Exception;
 
-class DomainException extends \DomainException implements
-    ExceptionInterface
-{}
+class DomainException extends \DomainException implements ExceptionInterface {}

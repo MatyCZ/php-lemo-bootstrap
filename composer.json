@@ -11,14 +11,45 @@
     "require": {
         "ext-intl": "*",
         "laminas/laminas-form": "^2.0 || ^3.0",
-        "laminas/laminas-modulemanager": "^2.14",
-        "laminas/laminas-stdlib": "^3.0",
         "laminas/laminas-view": "^2.0",
-        "php": "^8.0"
+        "php": "^8.3"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "3.65.0",
+        "phpstan/phpstan": "1.12.11",
+        "rector/rector": "1.2.10"
     },
     "autoload": {
         "psr-4": {
             "Lemo\\Bootstrap\\": "src/"
         }
+    },
+    "scripts": {
+        "phpcsfixer": [
+            "Composer\\Config::disableProcessTimeout",
+            "php ./vendor/bin/php-cs-fixer check --verbose --diff"
+        ],
+        "phpcsfixer-fix": [
+            "Composer\\Config::disableProcessTimeout",
+            "php ./vendor/bin/php-cs-fixer fix"
+        ],
+        "phpstan": [
+            "Composer\\Config::disableProcessTimeout",
+            "php ./vendor/bin/phpstan analyse -v ./src"
+        ],
+        "rector": [
+            "Composer\\Config::disableProcessTimeout",
+            "rector --dry-run"
+        ],
+        "rector-fix": [
+            "Composer\\Config::disableProcessTimeout",
+            "rector"
+        ]
+    },
+    "scripts-descriptions": {
+        "phpcsfixer": "Showing the suggested code style changes from PHP CS Fixer",
+        "phpcsfixer-fix": "Fixing the Code Style according to PER 2.0 standards",
+        "rector": "Showing the suggested changes from Rector",
+        "rector-fix": "Fixing the code according to the Rector Rules"
     }
 }

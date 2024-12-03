@@ -19,7 +19,7 @@ class ConfigProvider
         return [
             'invokables' => [
                 Form\Form::class => Form\Form::class,
-            ]
+            ],
         ];
     }
 
@@ -27,7 +27,6 @@ class ConfigProvider
     {
         return [
             'aliases' => [
-                'formCaptchaImage' => Form\View\Helper\Captcha\Image::class,
                 'formControl' => Form\View\Helper\FormControl::class,
                 'formControlAddon' => Form\View\Helper\FormControlAddon::class,
                 'formControlHelpBlock' => Form\View\Helper\FormControlHelpBlock::class,
@@ -41,19 +40,20 @@ class ConfigProvider
                 'formGroupsFieldset' => Form\View\Helper\FormGroupsFieldset::class,
                 'formRenderOptions' => Form\View\Helper\FormRenderOptions::class,
             ],
+            'factories' => [
+                Form\View\Helper\FormControl::class => Form\View\Helper\FormControlFactory::class,
+                Form\View\Helper\FormControls::class => Form\View\Helper\FormControlsFactory::class,
+                Form\View\Helper\FormGroupElement::class => Form\View\Helper\FormGroupElementFactory::class,
+                Form\View\Helper\FormGroupElements::class => Form\View\Helper\FormGroupElementsFactory::class,
+                Form\View\Helper\FormGroups::class => Form\View\Helper\FormGroupsFactory::class,
+                Form\View\Helper\FormGroupsCollection::class => Form\View\Helper\FormGroupsCollectionFactory::class,
+                Form\View\Helper\FormGroupsCollectionTemplate::class => Form\View\Helper\FormGroupsCollectionTemplateFactory::class,
+                Form\View\Helper\FormGroupsFieldset::class => Form\View\Helper\FormGroupsFieldsetFactory::class,
+            ],
             'invokables' => [
-                Form\View\Helper\Captcha\Image::class => Form\View\Helper\Captcha\Image::class,
-                Form\View\Helper\FormControl::class => Form\View\Helper\FormControl::class,
                 Form\View\Helper\FormControlAddon::class => Form\View\Helper\FormControlAddon::class,
                 Form\View\Helper\FormControlHelpBlock::class => Form\View\Helper\FormControlHelpBlock::class,
                 Form\View\Helper\FormControlLabel::class => Form\View\Helper\FormControlLabel::class,
-                Form\View\Helper\FormControls::class => Form\View\Helper\FormControls::class,
-                Form\View\Helper\FormGroupElement::class => Form\View\Helper\FormGroupElement::class,
-                Form\View\Helper\FormGroupElements::class => Form\View\Helper\FormGroupElements::class,
-                Form\View\Helper\FormGroups::class => Form\View\Helper\FormGroups::class,
-                Form\View\Helper\FormGroupsCollection::class => Form\View\Helper\FormGroupsCollection::class,
-                Form\View\Helper\FormGroupsCollectionTemplate::class => Form\View\Helper\FormGroupsCollectionTemplate::class,
-                Form\View\Helper\FormGroupsFieldset::class => Form\View\Helper\FormGroupsFieldset::class,
                 Form\View\Helper\FormRenderOptions::class => Form\View\Helper\FormRenderOptions::class,
             ],
         ];
