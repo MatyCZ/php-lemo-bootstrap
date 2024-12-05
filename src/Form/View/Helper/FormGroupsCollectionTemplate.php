@@ -72,14 +72,14 @@ class FormGroupsCollectionTemplate extends AbstractHelper
                 // Render index
                 $template = str_replace(
                     $this->templatePlaceholderIndex,
-                    $index,
+                    (string) $index,
                     $template,
                 );
 
                 // Render order
                 $template = str_replace(
                     $this->templatePlaceholderOrder,
-                    $index + 1,
+                    (string) ($index + 1),
                     $template,
                 );
 
